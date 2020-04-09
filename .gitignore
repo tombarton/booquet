@@ -35,3 +35,8 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Coverage
+/coverage-e2e
+/coverage-unit
+/coverage

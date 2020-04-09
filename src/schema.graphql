@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Auth {
-  """JWT Bearer token"""
-  token: String!
-  user: User!
-}
-
 input ChangePasswordInput {
   oldPassword: String!
   newPassword: String!
@@ -24,8 +18,8 @@ input LoginInput {
 }
 
 type Mutation {
-  signup(data: SignupInput!): Auth!
-  login(data: LoginInput!): Auth!
+  signup(data: SignupInput!): User!
+  login(data: LoginInput!): User!
   updateUser(data: UpdateUserInput!): User!
   changePassword(data: ChangePasswordInput!): User!
 }

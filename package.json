@@ -13,10 +13,11 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
+    "test": "jest && yarn test:e2e",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
+    "test:cov": "jest --coverage && yarn test:e2e --coverage && npx istanbul-merge --out coverage/final-coverage.json ./coverage-e2e/combined-coverage.json ./coverage-unit/coverage-final.json && npx istanbul report --include ./coverage/combined-coverage.json html",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json --runInBand"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -52,6 +53,7 @@
     "@types/jest": "25.1.4",
     "@types/node": "^13.9.1",
     "@types/passport-jwt": "^3.0.3",
+    "@types/set-cookie-parser": "^0.0.6",
     "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
@@ -62,6 +64,7 @@
     "eslint-plugin-security": "^1.4.0",
     "jest": "^25.1.0",
     "prettier": "^1.19.1",
+    "set-cookie-parser": "^2.4.5",
     "supertest": "^4.0.2",
     "ts-jest": "25.2.1",
     "ts-loader": "^6.2.1",
@@ -76,11 +79,14 @@
       "ts"
     ],
     "rootDir": "src",
-    "testRegex": ".spec.ts$",
+    "testRegex": [".spec.ts$"],
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
-    "coverageDirectory": "../coverage",
+    "collectCoverageFrom": [
+      "<rootDir>/**/*.{ts,js}"
+    ],
+    "coverageDirectory": "../coverage-unit",
     "testEnvironment": "node"
   }
 }
