@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRESQL_URL")
+  url = "***"
 }
 
 model User {
@@ -14,7 +14,7 @@ model User {
   lastname            String
   password            String
   registeredAt        DateTime @default(now())
-  resetToken          String?  @unique
+  resetToken          String? @unique
   resetTokenExpiry    DateTime?
   updatedAt           DateTime @updatedAt
 }

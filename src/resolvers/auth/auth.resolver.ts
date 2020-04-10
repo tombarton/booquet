@@ -4,10 +4,16 @@ import { AuthService } from '../../services/auth.service';
 import { SignupInput } from './dto/signup.input';
 import { GraphQLContext } from '../../types';
 import { User } from '../../models/user';
+import { ForgotPasswordInput } from './dto/forgotPassword.input';
+import { ResetPasswordInput } from './dto/resetPassword.input';
+import { JwtService } from '@nestjs/jwt';
 
 @Resolver(of => User)
 export class AuthResolver {
-  constructor(private readonly auth: AuthService) {}
+  constructor(
+    private readonly auth: AuthService,
+    private readonly jwtService: JwtService
+  ) {}
 
   @Mutation(returns => User)
   async signup(@Args('data') data: SignupInput) {
@@ -23,17 +29,29 @@ export class AuthResolver {
     @Args('data') { email, password }: LoginInput
   ) {
     const token = await this.auth.login(email.toLowerCase(), password);
-    const [header, payload, signature] = token.split('.');
-
-    // Set signature httpOnly cookie.
-    // TODO: Need to set secure mode in production...
-    context.res.cookie('signature', signature, {
-      httpOnly: true,
-    });
-
-    // Set remainder of JWT as a standard cookie, accessible via JS.
-    context.res.cookie('partialJwt', `${header}.${payload}`);
+    await this.auth.setloginCookies(token, context);
 
     return await this.auth.getUserFromToken(token);
+  }
+
+  @Mutation(returns => Boolean)
+  async forgotPassword(@Args('data') { email }: ForgotPasswordInput) {
+    return await this.auth.forgotPassword(email.toLowerCase());
+  }
+
+  @Mutation(returns => User)
+  async resetPassword(
+    @Context() context: GraphQLContext,
+    @Args('data') payload: ResetPasswordInput
+  ) {
+    const user = await this.auth.resetPassword(payload);
+
+    if (payload.autoLogin) {
+      // Generate a token and set the appropriate cookies.
+      const token = this.jwtService.sign({ userId: user.id });
+      await this.auth.setloginCookies(token, context);
+    }
+
+    return user;
   }
 }

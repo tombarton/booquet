@@ -12,6 +12,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input ForgotPasswordInput {
+  email: String!
+}
+
 input LoginInput {
   email: String!
   password: String!
@@ -20,12 +24,20 @@ input LoginInput {
 type Mutation {
   signup(data: SignupInput!): User!
   login(data: LoginInput!): User!
+  forgotPassword(data: ForgotPasswordInput!): Boolean!
+  resetPassword(data: ResetPasswordInput!): User!
   updateUser(data: UpdateUserInput!): User!
   changePassword(data: ChangePasswordInput!): User!
 }
 
 type Query {
   me: User!
+}
+
+input ResetPasswordInput {
+  resetTokenHash: String!
+  newPassword: String!
+  autoLogin: Boolean
 }
 
 """User role"""

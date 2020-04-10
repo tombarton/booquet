@@ -5,3 +5,6 @@
 
 20200403214300-init
 20200404110112-updated-at-decorator
+20200410222604-rename-reset-token-expiry
+20200410223355-change-token-expiry-type
+20200410230955-make-reset-token-hash-unique

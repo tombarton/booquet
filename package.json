@@ -17,7 +17,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage && yarn test:e2e --coverage && npx istanbul-merge --out coverage/final-coverage.json ./coverage-e2e/combined-coverage.json ./coverage-unit/coverage-final.json && npx istanbul report --include ./coverage/combined-coverage.json html",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json --runInBand"
+    "test:e2e": "jest --config ./test/jest-e2e.json --runInBand",
+    "prisma:save": "npx prisma2 migrate save --experimental",
+    "prisma:update": "npx prisma2 migrate up --experimental",
+    "prisma:generate": "npx prisma2 generate"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -33,10 +36,12 @@
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.1",
     "cookie-parser": "^1.4.5",
+    "date-fns": "^2.12.0",
     "graphql": "^14.6.0",
     "graphql-tools": "^4.0.7",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "postmark": "^2.5.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
@@ -79,7 +84,9 @@
       "ts"
     ],
     "rootDir": "src",
-    "testRegex": [".spec.ts$"],
+    "testRegex": [
+      ".spec.ts$"
+    ],
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
