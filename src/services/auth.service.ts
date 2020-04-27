@@ -4,6 +4,7 @@ import {
   NotFoundException,
   BadRequestException,
   UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from './prisma.service';
@@ -15,8 +16,9 @@ import { addHours, isAfter } from 'date-fns';
 import { ConfigService } from '@nestjs/config';
 import { randomBytes } from 'crypto';
 import { hash } from 'bcrypt';
-import { ResetPasswordInput } from 'src/resolvers/auth/dto/resetPassword.input';
-import { GraphQLContext } from 'src/types';
+import { ResetPasswordInput } from '../resolvers/auth/dto/resetPassword.input';
+import { GraphQLContext } from '../types';
+import { Role } from '../models/user';
 
 @Injectable()
 export class AuthService {
@@ -38,6 +40,9 @@ export class AuthService {
         data: {
           ...payload,
           password: hashedPassword,
+          // All users are added with a standard role by default.
+          // TODO: Add the ability for admins to create other ADMIN roles.
+          role: Role.USER,
         },
       });
 
@@ -80,6 +85,13 @@ export class AuthService {
 
     if (!user) {
       throw new NotFoundException(`No user found for email ${email}`);
+    }
+
+    // Do not allow ADMIN users to reset their passwords.
+    if (user.role === Role.ADMIN) {
+      throw new ForbiddenException(
+        `For security purposes, admin users cannot reset their passwords.`
+      );
     }
 
     const updatedUser = await this.prisma.user.update({

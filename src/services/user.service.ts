@@ -20,6 +20,10 @@ export class UserService {
     });
   }
 
+  async getAllUsers() {
+    return this.prisma.user.findMany();
+  }
+
   async changePassword(
     userId: number,
     userPassword: string,

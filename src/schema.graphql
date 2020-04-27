@@ -32,6 +32,7 @@ type Mutation {
 
 type Query {
   me: User!
+  getAllUsers: [User!]!
 }
 
 input ResetPasswordInput {

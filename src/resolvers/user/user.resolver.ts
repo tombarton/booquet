@@ -6,9 +6,12 @@ import { UserService } from '../../services/user.service';
 import { CurrentUser } from '../../decorators/user.decorator';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { Role } from '../../models/user';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RolesGuard } from '../../guards/role.guard';
 
 @Resolver(of => User)
-@UseGuards(GqlAuthGuard)
+@UseGuards(GqlAuthGuard, RolesGuard)
 export class UserResolver {
   constructor(private userService: UserService) {}
 
@@ -37,5 +40,11 @@ export class UserResolver {
       user.password,
       changePassword
     );
+  }
+
+  @Query(returns => [User])
+  @Roles(Role.ADMIN)
+  async getAllUsers() {
+    return this.userService.getAllUsers();
   }
 }

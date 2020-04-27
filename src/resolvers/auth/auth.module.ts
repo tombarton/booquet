@@ -9,6 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { EmailService } from '../../services/email.service';
+import { RolesGuard } from 'src/guards/role.guard';
 
 @Module({
   imports: [
@@ -25,10 +26,11 @@ import { EmailService } from '../../services/email.service';
     AuthResolver,
     JwtStrategy,
     GqlAuthGuard,
+    RolesGuard,
     PasswordService,
     PrismaService,
     EmailService,
   ],
-  exports: [GqlAuthGuard],
+  exports: [GqlAuthGuard, RolesGuard],
 })
 export class AuthModule {}

@@ -8,3 +8,4 @@
 20200410222604-rename-reset-token-expiry
 20200410223355-change-token-expiry-type
 20200410230955-make-reset-token-hash-unique
+20200415123926-add-role-to-user-model
