@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../src/app.module';
 import { PrismaService } from '../../src/services/prisma.service';
+import { Role } from '../../src/models/user';
 
 const prisma = new PrismaService();
 
@@ -24,6 +25,7 @@ export const createTestUser = async () => {
   await prisma.user.create({
     data: {
       ...testUserData,
+      role: Role.USER,
       // TODO: This should probably be in an env var, and not stored in git.
       password: '$2b$10$Zk0Gb0ZB2H.rySSy5l98iORXriIVBlkBoOxtHaTtw9Rm5FtCO1OES',
     },

@@ -54,4 +54,12 @@ export class AuthResolver {
 
     return user;
   }
+
+  @Mutation(returns => Boolean)
+  async signOut(@Context() context: GraphQLContext) {
+    // Delete cookies.
+    await this.auth.clearLoginCookies(context);
+
+    return true;
+  }
 }

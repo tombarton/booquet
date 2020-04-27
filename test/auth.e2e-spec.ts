@@ -4,6 +4,7 @@ import { PrismaService } from '../src/services/prisma.service';
 import { createTestApplication, testUserData } from './utils';
 import * as cookieParser from 'set-cookie-parser';
 import { IncomingMessage } from 'http';
+import { Cookies } from '../src/services/auth.service';
 
 const gqlEndpoint = '/graphql';
 
@@ -86,17 +87,17 @@ describe('Auth Resolver', () => {
         // Ensure all cookies are set and present.
         const cookies = cookieParser.parse(res);
         const signature =
-          cookies.find(i => i.name === 'signature') ||
+          cookies.find(i => i.name === Cookies.SIGNATURE) ||
           ({} as cookieParser.Cookie);
         const partialJwt =
-          cookies.find(i => i.name === 'partialJwt') ||
+          cookies.find(i => i.name === Cookies.PARTIAL_JWT) ||
           ({} as cookieParser.Cookie);
 
-        expect(signature.name).toEqual('signature');
+        expect(signature.name).toEqual(Cookies.SIGNATURE);
         expect(signature.httpOnly).toEqual(true);
         expect(signature.value).toBeDefined();
 
-        expect(partialJwt.name).toEqual('partialJwt');
+        expect(partialJwt.name).toEqual(Cookies.PARTIAL_JWT);
         expect(partialJwt.value).toBeDefined();
       })
       .expect(

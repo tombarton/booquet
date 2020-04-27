@@ -26,6 +26,7 @@ type Mutation {
   login(data: LoginInput!): User!
   forgotPassword(data: ForgotPasswordInput!): Boolean!
   resetPassword(data: ResetPasswordInput!): User!
+  signOut: Boolean!
   updateUser(data: UpdateUserInput!): User!
   changePassword(data: ChangePasswordInput!): User!
 }

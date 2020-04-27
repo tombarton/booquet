@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtDto } from './dto/jwt.dto';
 import { User } from '@prisma/client';
 import { Request } from 'express';
+import { Cookies } from '../../services/auth.service';
 
 const parseCookie = (cookie: string) =>
   cookie
@@ -30,13 +31,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         // Grab cookie from request if present.
         // We split the JWT in two for security purposes and then piece them back together again here.
         if (req?.cookies) {
-          partialJwt = req.cookies['partialJwt'];
-          signature = req.cookies['signature'];
+          partialJwt = req.cookies[Cookies.PARTIAL_JWT];
+          signature = req.cookies[Cookies.SIGNATURE];
         } else {
           // Fall back to headers if we can't retrieve them from the paser.
           const cookies = parseCookie(req.headers.cookie);
-          partialJwt = cookies.partialJwt;
-          signature = cookies.signature;
+          partialJwt = cookies[Cookies.PARTIAL_JWT];
+          signature = cookies[Cookies.SIGNATURE];
         }
 
         return partialJwt && signature ? `${partialJwt}.${signature}` : null;

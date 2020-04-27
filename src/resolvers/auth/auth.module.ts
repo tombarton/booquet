@@ -9,7 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { EmailService } from '../../services/email.service';
-import { RolesGuard } from 'src/guards/role.guard';
+import { RolesGuard } from '../../guards/role.guard';
 
 @Module({
   imports: [

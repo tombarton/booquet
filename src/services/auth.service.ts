@@ -20,6 +20,11 @@ import { ResetPasswordInput } from '../resolvers/auth/dto/resetPassword.input';
 import { GraphQLContext } from '../types';
 import { Role } from '../models/user';
 
+export enum Cookies {
+  SIGNATURE = 'SIGNATURE',
+  PARTIAL_JWT = 'PARTIAL_JWT',
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -144,12 +149,21 @@ export class AuthService {
 
       // Set signature httpOnly cookie.
       // TODO: Need to set secure mode in production...
-      context.res.cookie('signature', signature, {
+      context.res.cookie(Cookies.SIGNATURE, signature, {
         httpOnly: true,
       });
 
       // Set remainder of JWT as a standard cookie, accessible via JS.
-      context.res.cookie('partialJwt', `${header}.${payload}`);
+      context.res.cookie(Cookies.PARTIAL_JWT, `${header}.${payload}`);
+
+      return res();
+    });
+  }
+
+  clearLoginCookies(context: GraphQLContext) {
+    return new Promise<void>(res => {
+      context.res.clearCookie(Cookies.SIGNATURE);
+      context.res.clearCookie(Cookies.PARTIAL_JWT);
 
       return res();
     });

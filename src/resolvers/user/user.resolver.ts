@@ -7,7 +7,7 @@ import { CurrentUser } from '../../decorators/user.decorator';
 import { ChangePasswordInput } from './dto/change-password.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { Role } from '../../models/user';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/role.guard';
 
 @Resolver(of => User)
@@ -15,6 +15,7 @@ import { RolesGuard } from '../../guards/role.guard';
 export class UserResolver {
   constructor(private userService: UserService) {}
 
+  @UseGuards(GqlAuthGuard)
   @Query(returns => User)
   async me(@CurrentUser() user: User): Promise<User> {
     return user;
