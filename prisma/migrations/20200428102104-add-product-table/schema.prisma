@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRESQL_URL")
+  url = "***"
 }
 
 model User {
@@ -27,7 +27,7 @@ enum Role {
 }
 
 model Product {
-  id    String @id
+  id    Int    @id
   name  String
   price Float
 }
@@ -35,7 +35,7 @@ model Product {
 model CartItem {
   id        Int     @default(autoincrement()) @id
   product   Product @relation(fields: [productId], references: [id])
-  productId String
+  productId Int
   quantity  Int     @default(1)
   user      User    @relation(fields: [userId], references: [id])
   userId    Int

@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { HealthController } from './controllers/health.controller';
+import { HealthController } from './controllers/health/health.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { AuthModule } from './resolvers/auth/auth.module';
 import { UserModule } from './resolvers/user/user.module';
+import { ContentfulModule } from './controllers/contentful/contentful.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserModule } from './resolvers/user/user.module';
     }),
     AuthModule,
     UserModule,
+    ContentfulModule,
   ],
   controllers: [HealthController],
 })

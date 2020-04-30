@@ -29,11 +29,13 @@ type Mutation {
   signOut: Boolean!
   updateUser(data: UpdateUserInput!): User!
   changePassword(data: ChangePasswordInput!): User!
+  addCartItem: String!
 }
 
 type Query {
   me: User!
   getAllUsers: [User!]!
+  getCartItems: String!
 }
 
 input ResetPasswordInput {
