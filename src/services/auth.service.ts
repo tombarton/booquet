@@ -76,7 +76,7 @@ export class AuthService {
     return this.jwtService.sign({ userId: user.id });
   }
 
-  validateUser(userId: number): Promise<User> {
+  validateUser(userId: string): Promise<User> {
     return this.prisma.user.findOne({ where: { id: userId } });
   }
 

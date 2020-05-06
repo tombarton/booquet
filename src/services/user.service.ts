@@ -11,7 +11,7 @@ export class UserService {
     private passwordService: PasswordService
   ) {}
 
-  updateUser(userId: number, newUserData: UpdateUserInput) {
+  updateUser(userId: string, newUserData: UpdateUserInput) {
     return this.prisma.user.update({
       data: newUserData,
       where: {
@@ -25,7 +25,7 @@ export class UserService {
   }
 
   async changePassword(
-    userId: number,
+    userId: string,
     userPassword: string,
     changePassword: ChangePasswordInput
   ) {
@@ -47,6 +47,29 @@ export class UserService {
         password: hashedPassword,
       },
       where: { id: userId },
+    });
+  }
+
+  // async addCartItem(userId: number) {
+  //   await this.prisma.cartItem.create({
+  //     data: {
+  //       product: {
+  //         connect: { id: '1' },
+  //       },
+  //       quantity: 1,
+  //       cart: {}
+  //     },
+  //   });
+  // }
+
+  async getCartItems(userId: string) {
+    return await this.prisma.cart.findOne({
+      where: {
+        userId,
+      },
+      include: {
+        CartItems: true,
+      },
     });
   }
 }

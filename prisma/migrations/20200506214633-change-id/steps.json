@@ -1,0 +1,31 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "OrderItem",
+      "field": "orderId",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Order",
+      "field": "id",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "newValue": "uuid()"
+    }
+  ]
+}

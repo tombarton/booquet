@@ -8,7 +8,7 @@ import { User } from '@prisma/client';
 import { Request } from 'express';
 import { Cookies } from '../../services/auth.service';
 
-const parseCookie = (cookie: string) =>
+export const parseCookie = (cookie: string) =>
   cookie
     .split(';')
     .map(v => v.split('='))
@@ -17,31 +17,33 @@ const parseCookie = (cookie: string) =>
       return acc;
     }, {} as { [key: string]: any });
 
+export const JwtFromRequest = (req: Request) => {
+  let partialJwt: string;
+  let signature: string;
+
+  // Grab cookie from request if present.
+  // We split the JWT in two for security purposes and then piece them back together again here.
+  if (req?.cookies) {
+    partialJwt = req.cookies[Cookies.PARTIAL_JWT];
+    signature = req.cookies[Cookies.SIGNATURE];
+  } else {
+    // Fall back to headers if we can't retrieve them from the paser.
+    const cookies = parseCookie(req.headers.cookie);
+    partialJwt = cookies[Cookies.PARTIAL_JWT];
+    signature = cookies[Cookies.SIGNATURE];
+  }
+
+  return partialJwt && signature ? `${partialJwt}.${signature}` : null;
+};
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private readonly authService: AuthService,
+    readonly authService: AuthService,
     readonly configService: ConfigService
   ) {
     super({
-      jwtFromRequest: (req: Request) => {
-        let partialJwt: string;
-        let signature: string;
-
-        // Grab cookie from request if present.
-        // We split the JWT in two for security purposes and then piece them back together again here.
-        if (req?.cookies) {
-          partialJwt = req.cookies[Cookies.PARTIAL_JWT];
-          signature = req.cookies[Cookies.SIGNATURE];
-        } else {
-          // Fall back to headers if we can't retrieve them from the paser.
-          const cookies = parseCookie(req.headers.cookie);
-          partialJwt = cookies[Cookies.PARTIAL_JWT];
-          signature = cookies[Cookies.SIGNATURE];
-        }
-
-        return partialJwt && signature ? `${partialJwt}.${signature}` : null;
-      },
+      jwtFromRequest: JwtFromRequest,
       secretOrKey: configService.get('JWT_SECRET'),
     });
   }

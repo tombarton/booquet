@@ -39,10 +39,8 @@
     "contentful-management": "^5.26.0",
     "cookie-parser": "^1.4.5",
     "date-fns": "^2.12.0",
-    "faker": "^4.1.0",
     "graphql": "^14.6.0",
     "graphql-tools": "^4.0.7",
-    "node-cache": "^5.1.0",
     "node-fetch": "^2.6.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -50,6 +48,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
+    "stripe": "^8.48.0",
     "type-graphql": "^0.17.6"
   },
   "devDependencies": {
@@ -60,7 +59,6 @@
     "@types/bcrypt": "^3.0.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.3",
-    "@types/faker": "^4.1.11",
     "@types/jest": "25.1.4",
     "@types/netmask": "^1.0.30",
     "@types/node": "^13.9.1",

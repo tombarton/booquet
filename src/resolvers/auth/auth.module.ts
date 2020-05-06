@@ -1,6 +1,7 @@
 import { PrismaService } from './../../services/prisma.service';
 import { PasswordService } from './../../services/password.service';
 import { GqlAuthGuard } from '../../guards/gql-auth.guard';
+import { GqlOptionalAuthGuard } from '../../guards/gql-optional-auth.guard';
 import { AuthService } from '../../services/auth.service';
 import { AuthResolver } from './auth.resolver';
 import { Module } from '@nestjs/common';
@@ -10,6 +11,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { EmailService } from '../../services/email.service';
 import { RolesGuard } from '../../guards/role.guard';
+import { OptionalStrategy } from './optional.strategy';
 
 @Module({
   imports: [
@@ -25,12 +27,14 @@ import { RolesGuard } from '../../guards/role.guard';
     AuthService,
     AuthResolver,
     JwtStrategy,
+    OptionalStrategy,
     GqlAuthGuard,
+    GqlOptionalAuthGuard,
     RolesGuard,
     PasswordService,
     PrismaService,
     EmailService,
   ],
-  exports: [GqlAuthGuard, RolesGuard],
+  exports: [GqlAuthGuard, GqlOptionalAuthGuard, RolesGuard],
 })
 export class AuthModule {}

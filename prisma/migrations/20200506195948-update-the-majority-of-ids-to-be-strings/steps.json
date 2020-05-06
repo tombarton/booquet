@@ -1,0 +1,103 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "User",
+      "field": "id",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "newValue": "uuid()"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "CartItem",
+      "field": "id",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CartItem",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "newValue": "uuid()"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "CartItem",
+      "field": "cardId",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "OrderItem",
+      "field": "id",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "OrderItem",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "newValue": "uuid()"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Order",
+      "field": "userId",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Cart",
+      "field": "id",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Cart",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "newValue": "uuid()"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Cart",
+      "field": "userId",
+      "type": "String"
+    }
+  ]
+}

@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRESQL_URL")
+  url = "***"
 }
 
 model User {
@@ -63,10 +63,6 @@ model OrderItem {
   orderId  Int
 }
 
-// PENDING: The order has been created but the user hasn't completed the payment.
-// AWAITING_CONFIRMATION: Waiting for the order/payment to be accepted.
-// AWAITING_FULFILLMENT: Waiting for the order to be fulfilled.
-// FULFILLED: Order completed and dispatched.
 enum OrderStatus {
   PENDING
   AWAITING_CONFIRMATION
@@ -74,7 +70,6 @@ enum OrderStatus {
   FULFILLED
 }
 
-// User is optional as an order can be created as a guest user.
 model Order {
   id        Int         @default(autoincrement()) @id
   items     OrderItem[]

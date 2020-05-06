@@ -1,0 +1,29 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Order",
+      "field": "user",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Order",
+      "field": "userId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Cart",
+      "field": "CartItems",
+      "type": "CartItem",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Cart",
+      "field": "CartItem"
+    }
+  ]
+}

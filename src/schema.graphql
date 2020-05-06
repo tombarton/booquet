@@ -2,6 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input BasketInput {
+  items: [String!]!
+}
+
 input ChangePasswordInput {
   oldPassword: String!
   newPassword: String!
@@ -29,13 +33,17 @@ type Mutation {
   signOut: Boolean!
   updateUser(data: UpdateUserInput!): User!
   changePassword(data: ChangePasswordInput!): User!
-  addCartItem: String!
+}
+
+type PaymentIntent {
+  """Payment Intent Token"""
+  token: String!
 }
 
 type Query {
   me: User!
   getAllUsers: [User!]!
-  getCartItems: String!
+  getIntent(data: BasketInput): PaymentIntent!
 }
 
 input ResetPasswordInput {

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as faker from 'faker';
 import {
   createClient as createDeliveryClient,
   ContentfulClientApi as DeliveryClientAPI,
@@ -90,30 +89,5 @@ export class ContentfulService {
         });
       }
     );
-  }
-
-  // Figure out how we only allow this to be run locally. Probably move it into a script or something.
-  async addFakeData(numberOfItems = 100) {
-    const SPACE_ID = this.configService.get('CONTENTFUL_SPACE');
-    const space = await this.contentfulManagementClient.getSpace(SPACE_ID);
-    const environment = await space.getEnvironment('staging');
-
-    for (let x = 0; x <= numberOfItems; x++) {
-      const newEntry = await environment.createEntry('product', {
-        fields: {
-          title: {
-            'en-US': faker.name.jobTitle(),
-          },
-          price: {
-            'en-US': faker.random.number(),
-          },
-          description: {
-            'en-US': faker.lorem.paragraph(),
-          },
-        },
-      });
-
-      await newEntry.publish();
-    }
   }
 }
