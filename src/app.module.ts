@@ -9,6 +9,7 @@ import { ContentfulModule } from './controllers/contentful/contentful.module';
 import { StripeWebhookModule } from './controllers/stripe-webhook/stripe-webhook.module';
 import { JsonBodyMiddleware } from './middleware/json-body.middleware';
 import { RawBodyMiddleware } from './middleware/raw-body.middleware';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { RawBodyMiddleware } from './middleware/raw-body.middleware';
     ContentfulModule,
     PaymentsModule,
     StripeWebhookModule,
+    EventsModule,
     JsonBodyMiddleware,
     RawBodyMiddleware,
   ],
