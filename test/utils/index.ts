@@ -26,7 +26,7 @@ export const createTestUser = async () => {
     data: {
       ...testUserData,
       role: Role.USER,
-      // TODO: This should probably be in an env var, and not stored in git.
+      // @TODO: This should probably be in an env var, and not stored in git.
       password: '$2b$10$Zk0Gb0ZB2H.rySSy5l98iORXriIVBlkBoOxtHaTtw9Rm5FtCO1OES',
     },
   });

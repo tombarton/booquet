@@ -25,7 +25,7 @@ export class EmailService {
         TemplateId: 16084088,
         From: this.configService.get('EMAIL_FROM_ADDRESS'),
         To: email,
-        // TODO: Sort out email templates and variables.
+        // @TODO: Sort out email templates and variables.
         TemplateModel: {
           name,
           /* eslint-disable @typescript-eslint/camelcase */

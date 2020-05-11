@@ -46,7 +46,7 @@ export class AuthService {
           ...payload,
           password: hashedPassword,
           // All users are added with a standard role by default.
-          // TODO: Add the ability for admins to create other ADMIN roles.
+          // @TODO: Add the ability for admins to create other ADMIN roles.
           role: Role.USER,
         },
       });
@@ -148,7 +148,7 @@ export class AuthService {
       const [header, payload, signature] = jwt.split('.');
 
       // Set signature httpOnly cookie.
-      // TODO: Need to set secure mode in production...
+      // @TODO: Need to set secure mode in production...
       context.res.cookie(Cookies.SIGNATURE, signature, {
         httpOnly: true,
       });
