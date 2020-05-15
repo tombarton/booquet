@@ -21,7 +21,8 @@
     "prisma:save": "npx prisma migrate save --experimental",
     "prisma:update": "npx prisma migrate up --experimental",
     "prisma:generate": "npx prisma generate",
-    "postinstall": "yarn prisma:generate"
+    "postinstall": "yarn prisma:generate",
+    "docker:base": "docker build -f Dockerfile.base -t booquet/base ."
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
