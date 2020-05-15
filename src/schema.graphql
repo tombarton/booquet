@@ -28,22 +28,31 @@ input LoginInput {
 type Mutation {
   signup(data: SignupInput!): User!
   login(data: LoginInput!): User!
+  logout: Boolean!
   forgotPassword(data: ForgotPasswordInput!): Boolean!
   resetPassword(data: ResetPasswordInput!): User!
-  signOut: Boolean!
-  updateUser(data: UpdateUserInput!): User!
+  updateuser(data: UpdateUserInput!): User!
   changePassword(data: ChangePasswordInput!): User!
 }
 
 type PaymentIntent {
-  """Payment Intent Token"""
+  """
+  Payment Intent Token
+  """
   token: String!
 }
 
+type Product {
+  id: ID!
+  name: String!
+  price: Float!
+}
+
 type Query {
+  getIntent(data: BasketInput): PaymentIntent!
+  getAllProducts: [Product!]!
   me: User!
   getAllUsers: [User!]!
-  getIntent(data: BasketInput): PaymentIntent!
 }
 
 input ResetPasswordInput {
@@ -52,7 +61,9 @@ input ResetPasswordInput {
   autoLogin: Boolean
 }
 
-"""User role"""
+"""
+User role
+"""
 enum Role {
   ADMIN
   USER
@@ -61,8 +72,12 @@ enum Role {
 input SignupInput {
   email: String!
   password: String!
-  firstname: String
-  lastname: String
+  firstname: String!
+  lastname: String!
+}
+
+type Subscription {
+  UPDATE_USER: User!
 }
 
 input UpdateUserInput {

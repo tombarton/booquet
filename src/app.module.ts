@@ -1,50 +1,56 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { HealthController } from './controllers/health/health.controller';
 import { GraphQLModule } from '@nestjs/graphql';
-import { AuthModule } from './resolvers/auth/auth.module';
-import { UserModule } from './resolvers/user/user.module';
-import { PaymentsModule } from './resolvers/payments/payments.module';
-import { ContentfulModule } from './controllers/contentful/contentful.module';
-import { StripeWebhookModule } from './controllers/stripe-webhook/stripe-webhook.module';
-import { JsonBodyMiddleware } from './middleware/json-body.middleware';
-import { RawBodyMiddleware } from './middleware/raw-body.middleware';
-import { EventsModule } from './events/events.module';
+import { ContentfulModule } from '@root/contentful/contentful.module';
+import { StripeModule } from '@root/stripe/stripe.module';
+import { ProductsModule } from '@root/products/products.module';
+import { AuthModule } from '@root/auth/auth.module';
+import { UserModule } from '@root/user/user.module';
+import { HealthController } from '@root/core/health.controller';
+import { RawBodyMiddleware } from '@root/core/middleware/raw-body.middleware';
+import { JsonBodyMiddleware } from '@root/core/middleware/json-body.middleware';
+import { isEnabled, GQL_CONFIG, CORS_CONFIG } from '@core/config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     GraphQLModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
-        autoSchemaFile:
-          configService.get('GRAPHQL_SCHEMA_DEST') || './src/schema.graphql',
-        debug:
-          configService.get('GRAPHQL_DEBUG_ENABLED') === '1' ? true : false,
-        playground: configService.get('GRAPHQL_PLAYGROUND_ENABLED')
-          ? {
-              settings: {
-                'request.credentials': 'include',
-              },
-            }
+        autoSchemaFile: GQL_CONFIG.schemaPath,
+        installSubscriptionHandlers: true,
+        debug: isEnabled(configService.get('GRAPHQL_DEBUG_ENABLED')),
+        playground: isEnabled(configService.get('GRAPHQL_PLAYGROUND_ENABLED'))
+          ? GQL_CONFIG.playgroundConfig
           : false,
-        context: ({ req, res }) => ({ req, res }),
+        // Set CORS here as well as it overrides root CORS settings.
+        cors: CORS_CONFIG,
+        context: ({ req, res, payload, connection }) => ({
+          req,
+          res,
+          payload,
+          connection,
+        }),
+        subscriptions: {
+          // @TODO: Improve typings.
+          onConnect: (
+            connectionParams: { [key: string]: any },
+            websocket: { [key: string]: any }
+          ) => {
+            return { headers: websocket?.upgradeReq?.headers };
+          },
+        },
       }),
       inject: [ConfigService],
     }),
+    ContentfulModule,
+    StripeModule,
+    ProductsModule,
     AuthModule,
     UserModule,
-    ContentfulModule,
-    PaymentsModule,
-    StripeWebhookModule,
-    EventsModule,
-    JsonBodyMiddleware,
-    RawBodyMiddleware,
   ],
   controllers: [HealthController],
 })
 export class AppModule implements NestModule {
-  // Apply Raw Body middleware to the stripe webhook
-  // so we can verify the sender signature.
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(RawBodyMiddleware)
