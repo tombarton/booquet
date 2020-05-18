@@ -24,7 +24,10 @@ jobs:
       - name: Run tests
         run: yarn test
 
-      - name: Buil docker image
-        run: docker-compose build -t ${{github.head_ref}}
+      - name: Build docker image
+        run: docker-compose build
         env:
           PRISMA_DB_URL: ${{ secrets.PRISMA_BUILD_URL }}
+
+      - name: Tag docker image
+        run: docker -t booquet/app:latest booquest/app:${{github.head_ref}}
