@@ -45,3 +45,8 @@ jobs:
         uses: tombarton/basic-http-action@v1.3
         with:
           endpoint: 'http://localhost:4000/health'
+
+      - name: Debug
+        run: |
+          docker logs booquet_booquet_1
+          curl http://localhost:4000/health
