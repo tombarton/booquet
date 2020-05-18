@@ -19,6 +19,8 @@ services:
       - CONTENTFUL_ACCESS_TOKEN=hello-world
       - CONTENTFUL_SPACE=hello-world
       - CONTENTFUL_ENVIRONMENT=staging
+      - FE_URL=docs.nestjs.com
+      - BE_URL=docs.nestjs.com
     depends_on:
       - redis
   redis:

@@ -13,7 +13,7 @@ import {
 
 @Injectable()
 export class RedisHealthIndicator extends HealthIndicator {
-  timeout = 250;
+  timeout = 400;
 
   constructor(@Inject('PubSub') private readonly pubSub: RedisPubSub) {
     super();
