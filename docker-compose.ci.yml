@@ -11,7 +11,7 @@ services:
     environment:
       # A mix of fake and real data, depending on the variable.
       - REDIS_HOST=gql-subscriptions
-      - PRISMA_DB_URL=${PRISMA_BUILD_URL}
+      - PRISMA_DB_URL=${PRISMA_DB_URL}
       - JWT_SECRET=hello-world
       - BCRYPT_SALT_OR_ROUNDS=10
       - POSTMARK_KEY=hello-world
