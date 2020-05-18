@@ -99,7 +99,7 @@ export class StripeService {
 
     // Create the barebones order.
     const order = await this.createOrder({
-      items: products.map<OrderItemWithoutOrderId>((i) => ({
+      items: products.map<OrderItemWithoutOrderId>(i => ({
         title: i.name,
         image: '',
         price: i.price,

@@ -8,14 +8,14 @@ import { LoginInput } from './dto/login.input';
 import { ResetPasswordInput } from './dto/reset-password.input';
 import { ForgotPasswordInput } from './dto/forgot-password.input';
 
-@Resolver((of) => User)
+@Resolver(of => User)
 export class AuthResolver {
   constructor(
     private readonly auth: AuthService,
     private readonly jwtService: JwtService
   ) {}
 
-  @Mutation((returns) => User)
+  @Mutation(returns => User)
   async signup(@Args('data') data: SignupInput) {
     data.email = data.email.toLowerCase();
     const token = await this.auth.createUser(data);
@@ -23,7 +23,7 @@ export class AuthResolver {
     return await this.auth.getUserFromToken(token);
   }
 
-  @Mutation((returns) => User)
+  @Mutation(returns => User)
   async login(
     @Context() context: GraphQLContext,
     @Args('data') { email, password }: LoginInput
@@ -34,7 +34,7 @@ export class AuthResolver {
     return await this.auth.getUserFromToken(token);
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(returns => Boolean)
   async logout(@Context() context: GraphQLContext) {
     // Delete cookies.
     await this.auth.clearLoginCookies(context);
@@ -42,12 +42,12 @@ export class AuthResolver {
     return true;
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(returns => Boolean)
   async forgotPassword(@Args('data') { email }: ForgotPasswordInput) {
     return await this.auth.forgotPassword(email.toLowerCase());
   }
 
-  @Mutation((returns) => User)
+  @Mutation(returns => User)
   async resetPassword(
     @Context() context: GraphQLContext,
     @Args('data') payload: ResetPasswordInput

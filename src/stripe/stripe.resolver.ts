@@ -7,12 +7,12 @@ import { StripeService } from './stripe.service';
 import { BasketInput } from './dto/basket.input';
 import { PaymentIntent } from './dto/payment-intent';
 
-@Resolver((of) => PaymentIntent)
+@Resolver(of => PaymentIntent)
 @UseGuards(GqlOptionalAuthGuard)
 export class StripeResolver {
   constructor(private readonly stripeService: StripeService) {}
 
-  @Query((returns) => PaymentIntent)
+  @Query(returns => PaymentIntent)
   async getIntent(
     @CurrentUser() user: User,
     @Args('data', { nullable: true }) basket: BasketInput

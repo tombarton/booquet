@@ -10,7 +10,7 @@ import { Cookies, AuthService } from '../auth.service';
 export const parseCookie = (cookie: string) =>
   cookie
     .split(';')
-    .map((v) => v.split('='))
+    .map(v => v.split('='))
     .reduce((acc, v) => {
       acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
       return acc;
