@@ -72,7 +72,7 @@ export class ContentfulService {
     // of pressure to put on the databse just to simply update the products.
     await asyncForEach<Entry<ContentfulProduct>>(
       productContent,
-      async (product) => {
+      async product => {
         await this.prismaService.product.upsert({
           create: {
             id: product.sys.id,

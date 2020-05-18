@@ -12,7 +12,7 @@ import { RolesGuard } from '@common/guards/role.guard';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { ChangePasswordInput } from './dto/change-password.input';
 
-@Resolver((of) => User)
+@Resolver(of => User)
 @UseGuards(GqlAuthGuard, RolesGuard)
 export class UserResolver {
   constructor(
@@ -20,12 +20,12 @@ export class UserResolver {
     private readonly userService: UserService
   ) {}
 
-  @Query((returns) => User)
+  @Query(returns => User)
   async me(@CurrentUser() user: User): Promise<User> {
     return user;
   }
 
-  @Mutation((returns) => User)
+  @Mutation(returns => User)
   async updateuser(
     @CurrentUser() user: User,
     @Args('data') newUserData: UpdateUserInput
@@ -39,7 +39,7 @@ export class UserResolver {
     return updatedUser;
   }
 
-  @Mutation((returns) => User)
+  @Mutation(returns => User)
   async changePassword(
     @CurrentUser() user: User,
     @Args('data') changePassword: ChangePasswordInput
@@ -49,14 +49,14 @@ export class UserResolver {
 
   // @TODO: Remove this, it just tests the role guard.
   @Roles(Role.ADMIN)
-  @Query((returns) => [User])
+  @Query(returns => [User])
   async getAllUsers() {
     return this.userService.getAllUsers();
   }
 
   // @TODO: Remove this, it just serves as an example of how to do
   // GraphQL subscription.
-  @Subscription((returns) => User, { name: 'UPDATE_USER' })
+  @Subscription(returns => User, { name: 'UPDATE_USER' })
   watchUserUpdates() {
     return this.pubSub.asyncIterator('UPDATE_USER');
   }

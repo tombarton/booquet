@@ -144,7 +144,7 @@ export class AuthService {
   }
 
   setloginCookies(jwt: string, context: GraphQLContext) {
-    return new Promise<void>((res) => {
+    return new Promise<void>(res => {
       const [header, payload, signature] = jwt.split('.');
 
       // Set signature httpOnly cookie.
@@ -161,7 +161,7 @@ export class AuthService {
   }
 
   clearLoginCookies(context: GraphQLContext) {
-    return new Promise<void>((res) => {
+    return new Promise<void>(res => {
       context.res.clearCookie(Cookies.SIGNATURE);
       context.res.clearCookie(Cookies.PARTIAL_JWT);
 
