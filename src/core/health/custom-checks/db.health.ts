@@ -13,7 +13,7 @@ import { PrismaService } from '@common/services';
 
 @Injectable()
 export class DatabaseHealthIndicator extends HealthIndicator {
-  timeout = 250;
+  timeout = 400;
 
   constructor(private prisma: PrismaService) {
     super();

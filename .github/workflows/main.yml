@@ -1,0 +1,53 @@
+name: Merge Request
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Build, tag and run docker image
+        run: |
+          docker-compose -f docker-compose.ci.yml build
+          docker tag booquet/app:latest booquet/app:${{github.sha}}
+          docker-compose -f docker-compose.ci.yml up -d
+        env:
+          PRISMA_DB_URL: ${{ secrets.PRISMA_BUILD_URL }}
+
+      - name: Artifical wait for Docker compose
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '10s'
+
+      - name: Debug
+        run: |
+          docker ps -a
+          docker logs booquet_booquet_1
+          curl http://localhost:4000/health
+
+      - name: Test docker container
+        uses: tombarton/basic-http-action@v1.5
+        with:
+          endpoint: 'http://localhost:4000/health'
