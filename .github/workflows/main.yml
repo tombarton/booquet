@@ -41,6 +41,7 @@ jobs:
         with:
           time: '10s'
 
-      - name: Curl endpoint
-        run: |
-          curl http://localhost:4000
+      - name: Test docker container
+        uses: tombarton/basic-http-action
+        with:
+          endpoint: 'http://localhost:4000'
