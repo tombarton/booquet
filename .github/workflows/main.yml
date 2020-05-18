@@ -30,20 +30,11 @@ jobs:
 
       - name: Build, tag and run docker image
         run: |
-          docker-compose build
+          docker-compose -f docker-compose.ci.yml build
           docker tag booquet/app:latest booquet/app:${{github.sha}}
-          docker-compose up -d
+          docker-compose -f docker-compose.ci.yml up -d
         env:
-          # A mix of fake and real environment variables, depending on what they do.
-          REDIS_HOST: gql-subscriptions
           PRISMA_DB_URL: ${{ secrets.PRISMA_BUILD_URL }}
-          JWT_SECRET: hello-world
-          BCRYPT_SALT_OR_ROUNDS: 10
-          POSTMARK_KEY: hello-world
-          CONTENTFUL_MANAGEMENT_TOKEN: hello-world
-          CONTENTFUL_ACCESS_TOKEN: hello-world
-          CONTENTFUL_SPACE: hello-world
-          CONTENTFUL_ENVIRONMENT: staging
 
       - name: Wait for Docker compose to spin up
         uses: jakejarvis/wait-action@master

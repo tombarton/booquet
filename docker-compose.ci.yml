@@ -1,0 +1,37 @@
+version: '3.7'
+services:
+  booquet:
+    image: booquet/app
+    build:
+      context: .
+      args:
+        - PRISMA_DB_URL=${PRISMA_DB_URL}
+    ports:
+      - 4000:4000
+    environment:
+      # A mix of fake and real data, depending on the variable.
+      - REDIS_HOST=gql-subscriptions
+      - PRISMA_DB_URL=${PRISMA_BUILD_URL}
+      - JWT_SECRET=hello-world
+      - BCRYPT_SALT_OR_ROUNDS=10
+      - POSTMARK_KEY=hello-world
+      - CONTENTFUL_MANAGEMENT_TOKEN=hello-world
+      - CONTENTFUL_ACCESS_TOKEN=hello-world
+      - CONTENTFUL_SPACE=hello-world
+      - CONTENTFUL_ENVIRONMENT=staging
+    depends_on:
+      - redis
+  redis:
+    image: redis:6-alpine
+    container_name: gql-subscriptions
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/var/lib/redis
+
+volumes:
+  postgres:
+    name: booquet-db
+  redis:
+    name: booquet-cache
