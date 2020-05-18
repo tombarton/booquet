@@ -42,6 +42,6 @@ jobs:
           time: '10s'
 
       - name: Test docker container
-        uses: tombarton/basic-http-action
+        uses: tombarton/basic-http-action@v1
         with:
           endpoint: 'http://localhost:4000'
