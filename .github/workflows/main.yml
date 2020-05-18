@@ -41,7 +41,10 @@ jobs:
         with:
           time: '10s'
 
+      - name: Debugging
+        run: curl http://localhost:4000/health
+
       - name: Test docker container
-        uses: tombarton/basic-http-action@v1
+        uses: tombarton/basic-http-action@v1.1
         with:
           endpoint: 'http://localhost:4000/health'
