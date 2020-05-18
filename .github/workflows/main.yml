@@ -39,7 +39,7 @@ jobs:
       - name: Artifical wait for Docker compose
         uses: jakejarvis/wait-action@master
         with:
-          time: '5s'
+          time: '10s'
 
       - name: Test docker container
         uses: tombarton/basic-http-action@v1.2
