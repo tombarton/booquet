@@ -6,7 +6,7 @@ import { StripeModule } from '@root/stripe/stripe.module';
 import { ProductsModule } from '@root/products/products.module';
 import { AuthModule } from '@root/auth/auth.module';
 import { UserModule } from '@root/user/user.module';
-import { HealthController } from '@root/core/health.controller';
+import { HealthModule } from '@core/health/health.module';
 import { RawBodyMiddleware } from '@root/core/middleware/raw-body.middleware';
 import { JsonBodyMiddleware } from '@root/core/middleware/json-body.middleware';
 import { isEnabled, GQL_CONFIG, CORS_CONFIG } from '@core/config';
@@ -47,8 +47,8 @@ import { isEnabled, GQL_CONFIG, CORS_CONFIG } from '@core/config';
     ProductsModule,
     AuthModule,
     UserModule,
+    HealthModule,
   ],
-  controllers: [HealthController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

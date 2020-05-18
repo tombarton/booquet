@@ -36,9 +36,7 @@ type Mutation {
 }
 
 type PaymentIntent {
-  """
-  Payment Intent Token
-  """
+  """Payment Intent Token"""
   token: String!
 }
 
@@ -61,9 +59,7 @@ input ResetPasswordInput {
   autoLogin: Boolean
 }
 
-"""
-User role
-"""
+"""User role"""
 enum Role {
   ADMIN
   USER
