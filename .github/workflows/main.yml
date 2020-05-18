@@ -41,6 +41,11 @@ jobs:
           CONTENTFUL_SPACE: hello-world
           CONTENTFUL_ENVIRONMENT: staging
 
+      - name: Wait for Docker compose to spin up
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '10s'
+
       - name: Test application
         uses: lakuapik/gh-actions-http-status@v1
         with:
