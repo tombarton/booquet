@@ -27,6 +27,11 @@ jobs:
       - name: Build and tag docker image
         run: |
           docker-compose build
-          docker tag booquet/app:latest booquest/app:${{github.head_ref}}
+          docker tag booquet/app:latest booquet/app:${{github.sha}}
         env:
           PRISMA_DB_URL: ${{ secrets.PRISMA_BUILD_URL }}
+
+      - name: Publish docker image
+        run: |
+          echo '${{ secrets.DOCKER_PASS }}' | docker login --username tombarton --password-stdin
+          docker push booquet/app:${{github.sha}}
