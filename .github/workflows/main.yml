@@ -48,6 +48,6 @@ jobs:
           curl http://localhost:4000/health
 
       - name: Test docker container
-        uses: tombarton/basic-http-action@v1.4
+        uses: tombarton/basic-http-action@v1.5
         with:
           endpoint: 'http://localhost:4000/health'
