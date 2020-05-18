@@ -44,5 +44,5 @@ jobs:
       - name: Test application
         uses: lakuapik/gh-actions-http-status@v1
         with:
-          sites: '[http://localhost:4000/]'
+          sites: '["http://localhost:4000/"]'
           expected: '[200]'
