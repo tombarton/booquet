@@ -8,8 +8,9 @@ services:
         - PRISMA_DB_URL=${PRISMA_DB_URL}
     ports:
       - 4000:4000
-    env_file:
-      - ./.env
+    # Enable for local debugging
+    # env_file:
+    #   - ./.env
     environment:
       # Override REDIS_HOST in local development to point at internal docker network.
       - REDIS_HOST=gql-subscriptions
