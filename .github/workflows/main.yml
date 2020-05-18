@@ -1,22 +1,26 @@
 name: Merge Request
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   pull_request:
     branches: [master]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+
+      - uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
       - name: Install dependencies
         run: yarn install
@@ -45,6 +49,13 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '10s'
+
+      - name: Docker logs
+        run: |
+          docker ps
+          docker logs booquet_booquet
+          docker logs booquet_booquet_1
+          curl http://localhost:4000
 
       - name: Test application
         uses: lakuapik/gh-actions-http-status@v1
