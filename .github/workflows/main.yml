@@ -36,9 +36,6 @@ jobs:
           JWT_SECRET: hello-world
           BCRYPT_SALT_OR_ROUNDS: 10
           POSTMARK_KEY: hello-world
-          JWT_SECRET: hello-world
-          BCRYPT_SALT_OR_ROUNDS: 10
-          POSTMARK_KEY: hello-world
           CONTENTFUL_MANAGEMENT_TOKEN: hello-world
           CONTENTFUL_ACCESS_TOKEN: hello-world
           CONTENTFUL_SPACE: hello-world
