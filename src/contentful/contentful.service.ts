@@ -12,7 +12,7 @@ import {
 
 import { PrismaService } from '@common/services/prisma.service';
 import { asyncForEach } from '@common/utils/asyncForEach';
-import { ContentfulProduct } from '@root/types';
+import { ContentfulProduct, ContentfulEvent } from '@root/types';
 
 export enum Cookies {
   SIGNATURE = 'SIGNATURE',
@@ -39,7 +39,7 @@ export class ContentfulService {
   }
 
   async updateProducts(): Promise<void> {
-    const productContent: Entry<ContentfulProduct>[] = [];
+    const productContent: Entry<ContentfulProduct | ContentfulEvent>[] = [];
     const segmentSize = 1000;
     let fetchedAllContent = false;
     let paginationSkip = 0;
@@ -48,7 +48,7 @@ export class ContentfulService {
     // over 1000 pieces of content so we've included some simple pagination functionaltiy to loop over this.
     while (!fetchedAllContent) {
       const productDataSegment = await this.contentfulClient.getEntries<
-        ContentfulProduct
+        ContentfulProduct | ContentfulEvent
       >({
         limit: segmentSize,
         skip: paginationSkip,
@@ -70,23 +70,52 @@ export class ContentfulService {
     // is really bad from a performance point-of-view. Each individual loop is a
     // DB transaction. If there's potentially 1000 items, that's a stupid amount
     // of pressure to put on the databse just to simply update the products.
-    await asyncForEach<Entry<ContentfulProduct>>(
+    await asyncForEach<Entry<ContentfulProduct | ContentfulEvent>>(
       productContent,
-      async product => {
-        await this.prismaService.product.upsert({
-          create: {
-            id: product.sys.id,
-            name: product.fields.title,
-            price: product.fields.price,
-          },
-          update: {
-            name: product.fields.title,
-            price: product.fields.price,
-          },
-          where: {
-            id: product.sys.id,
-          },
-        });
+      async content => {
+        switch (content.sys.contentType.sys.id) {
+          case 'product': {
+            const product = content as Entry<ContentfulProduct>;
+            return await this.prismaService.product.upsert({
+              create: {
+                id: product.sys.id,
+                name: product.fields.title,
+                price: product.fields.price,
+              },
+              update: {
+                name: product.fields.title,
+                price: product.fields.price,
+              },
+              where: {
+                id: product.sys.id,
+              },
+            });
+          }
+          case 'event': {
+            const event = content as Entry<ContentfulEvent>;
+            return await this.prismaService.event.upsert({
+              create: {
+                id: event.sys.id,
+                title: event.fields.title,
+                date: new Date(event.fields.date),
+                capacity: event.fields.availableSpaces,
+              },
+              update: {
+                title: event.fields.title,
+                date: new Date(event.fields.date),
+                capacity: event.fields.availableSpaces,
+              },
+              where: {
+                id: event.sys.id,
+              },
+            });
+          }
+          default: {
+            console.error(
+              `No case found for content type: ${content.sys.contentType.sys.id}`
+            );
+          }
+        }
       }
     );
   }

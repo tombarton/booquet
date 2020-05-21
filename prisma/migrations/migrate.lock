@@ -4,3 +4,5 @@
 # Read more about conflict resolution here: TODO
 
 20200515124724-initial-model
+20200519203349-add-event-schema
+20200519210530-remove-event-auto-generated-id

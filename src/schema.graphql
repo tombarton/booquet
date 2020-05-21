@@ -16,6 +16,17 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Event {
+  id: String!
+  title: String!
+  totalCapacity: Float!
+  remainingCapacity: Float!
+}
+
+input EventCapacityInput {
+  id: String!
+}
+
 input ForgotPasswordInput {
   email: String!
 }
@@ -49,6 +60,7 @@ type Product {
 type Query {
   getIntent(data: BasketInput): PaymentIntent!
   getAllProducts: [Product!]!
+  getEventCapacity(data: EventCapacityInput!): Event!
   me: User!
   getAllUsers: [User!]!
 }
