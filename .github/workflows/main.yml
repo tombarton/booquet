@@ -16,7 +16,7 @@ jobs:
           cache-name: cache-node-modules
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
@@ -30,6 +30,7 @@ jobs:
 
       - name: Build, tag and run docker image
         run: |
+
           docker-compose -f docker-compose.ci.yml build
           docker tag booquet/app:latest booquet/app:${{github.sha}}
           docker-compose -f docker-compose.ci.yml up -d

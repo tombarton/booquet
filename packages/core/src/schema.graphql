@@ -100,6 +100,6 @@ type User {
   email: String!
   firstname: String
   lastname: String
-  role: Role
+  role: Role!
   password: String!
 }
