@@ -1,0 +1,8 @@
+{
+  "name": "@booquet/admin-ui",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --passWithNoTests"
+  }
+}
