@@ -10,3 +10,11 @@ export interface ContentfulProduct {
   price: number;
   description: string;
 }
+
+export interface ContentfulEvent {
+  title: string;
+  price: number;
+  description: string;
+  date: string;
+  availableSpaces: number;
+}
