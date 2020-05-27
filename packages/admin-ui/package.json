@@ -46,7 +46,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests --watchAll=false",
+    "test:watch": "react-scripts test",
     "eject": "react-scripts eject",
     "gen:graphql": "npx apollo client:codegen --localSchemaFile='../core/src/schema.graphql' --target='typescript' --globalTypesFile='./src/__generated__/globalTypes.ts'"
   },
