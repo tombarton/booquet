@@ -1,0 +1,27 @@
+{
+  "extends": [
+    "../../.eslintrc",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "react/prop-types": [0],
+    "react/display-name": [0],
+    "import/order": ["error"]
+  },
+  "plugins": ["react-hooks"]
+}

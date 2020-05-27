@@ -50,7 +50,7 @@ export class AuthService {
         },
       });
 
-      return this.jwtService.sign({ userId: user.id });
+      return this.jwtService.sign({ userId: user.id, role: user.role });
     } catch (err) {
       throw new ConflictException(`Email ${payload.email} is already in use.`);
     }
@@ -72,7 +72,7 @@ export class AuthService {
       throw new BadRequestException('Invalid password');
     }
 
-    return this.jwtService.sign({ userId: user.id });
+    return this.jwtService.sign({ userId: user.id, role: user.role });
   }
 
   validateUser(userId: string): Promise<User> {

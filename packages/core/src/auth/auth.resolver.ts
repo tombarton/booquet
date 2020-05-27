@@ -55,7 +55,7 @@ export class AuthResolver {
     const user = await this.auth.resetPassword(payload);
 
     if (payload.autoLogin) {
-      const token = this.jwtService.sign({ userId: user.id });
+      const token = this.jwtService.sign({ userId: user.id, role: user.role });
       await this.auth.setloginCookies(token, context);
     }
 
