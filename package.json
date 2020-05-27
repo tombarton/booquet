@@ -5,6 +5,8 @@
     "packages/*"
   ],
   "scripts": {
+    "start:fe": "yarn --cwd ./packages/admin-ui start",
+    "start:be": "yarn --cwd ./packages/core start:dev",
     "test": "yarn workspaces run test"
   },
   "devDependencies": {
@@ -19,7 +21,7 @@
     "pretty-quick": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
-    "jest": "^25.1.0",
+    "jest": "^24.9.0",
     "ts-jest": "25.2.1"
   }
 }
