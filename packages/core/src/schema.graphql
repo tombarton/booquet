@@ -46,6 +46,62 @@ type Mutation {
   changePassword(data: ChangePasswordInput!): User!
 }
 
+type Order {
+  id: ID!
+  items: [OrderItem!]!
+  total: Float!
+  status: OrderStatus!
+  chargeId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User
+}
+
+type OrderConnection {
+  edges: [OrderEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type OrderEdge {
+  cursor: String!
+  node: Order!
+}
+
+type OrderItem {
+  id: ID!
+  title: String!
+  image: String!
+  price: Float!
+  quantity: Float!
+}
+
+input OrderSort {
+  direction: SortDirection!
+  field: OrderSortField!
+}
+
+enum OrderSortField {
+  id
+  createdAt
+  updatedAt
+}
+
+"""Order Status"""
+enum OrderStatus {
+  AWAITING_CONFIRMATION
+  AWAITING_FULFILLMENT
+  FULFILLED
+}
+
+type PageInfo {
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String!
+  totalPages: String!
+}
+
 type PaymentIntent {
   """Payment Intent Token"""
   token: String!
@@ -63,6 +119,7 @@ type Query {
   getEventCapacity(data: EventCapacityInput!): Event!
   me: User!
   getAllUsers: [User!]!
+  getAllOrders(sortBy: OrderSort, limit: Int, skip: Int): OrderConnection!
 }
 
 input ResetPasswordInput {
@@ -82,6 +139,11 @@ input SignupInput {
   password: String!
   firstname: String!
   lastname: String!
+}
+
+enum SortDirection {
+  asc
+  desc
 }
 
 type Subscription {

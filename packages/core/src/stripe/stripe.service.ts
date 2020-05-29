@@ -15,7 +15,7 @@ interface OrderArgs {
 }
 
 interface AddIntentArgs {
-  orderId: number;
+  orderId: string;
   chargeId: string;
 }
 
@@ -147,7 +147,7 @@ export class StripeService {
     });
   }
 
-  private async createPaymentIntent(amount: number, orderId: number) {
+  private async createPaymentIntent(amount: number, orderId: string) {
     return await this.stripeAPI.paymentIntents.create({
       amount,
       currency: 'gbp',

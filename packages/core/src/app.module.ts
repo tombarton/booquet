@@ -10,6 +10,7 @@ import { HealthModule } from '@core/health/health.module';
 import { RawBodyMiddleware } from '@root/core/middleware/raw-body.middleware';
 import { JsonBodyMiddleware } from '@root/core/middleware/json-body.middleware';
 import { isEnabled, GQL_CONFIG, CORS_CONFIG } from '@core/config';
+import { OrderManagementModule } from './order-management/order-management.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { isEnabled, GQL_CONFIG, CORS_CONFIG } from '@core/config';
     AuthModule,
     UserModule,
     HealthModule,
+    OrderManagementModule,
   ],
 })
 export class AppModule implements NestModule {
