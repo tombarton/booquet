@@ -3,9 +3,6 @@ import { makeStyles, Theme, Container, Box } from '@material-ui/core';
 import Page from '../../components/Page';
 import { Header } from './Header';
 import { Orders } from './Orders';
-// import gql from 'graphql-tag';
-
-// const GET_ORDERS = gql``;
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {

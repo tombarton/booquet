@@ -9,7 +9,6 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get<Role[]>('roles', context.getHandler());
-
     if (!roles || !roles.length) return true;
 
     const ctx = GqlExecutionContext.create(context);
