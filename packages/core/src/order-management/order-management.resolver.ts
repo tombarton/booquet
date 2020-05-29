@@ -1,6 +1,6 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { Role } from '@prisma/client';
+import { Role, OrderStatus } from '@prisma/client';
 
 import { RolesGuard, GqlAuthGuard } from '@common/guards';
 import { Order, OrderConnection } from '@common/models/order';
@@ -26,6 +26,8 @@ export class OrderManagementResolver {
       args =>
         this.prisma.order.findMany({
           include: { user: true, items: true },
+          // PENDING is a server state. It should never be displayed to the user.
+          where: { status: { not: OrderStatus.PENDING } },
           orderBy: sortBy ? { [sortBy.field]: sortBy.direction } : null,
           ...args,
         }),

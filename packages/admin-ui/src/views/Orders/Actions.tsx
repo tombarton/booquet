@@ -13,6 +13,7 @@ import { CheckCircle, Cancel, Visibility } from '@material-ui/icons';
 import { MoreVertical as MoreVerticalIcon } from 'react-feather';
 import { useHistory } from 'react-router';
 import { OrderStatus } from '../../__generated__/globalTypes';
+import { RejectWarning, RefExports } from './RejectWarning';
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -50,6 +51,7 @@ export const Actions: React.FC<ActionsProps> = ({ orderId, status }) => {
     keyof typeof OrderStatus | 'DEFAULT'
   >('DEFAULT');
   const buttonRef = useRef<null | HTMLButtonElement>(null);
+  const rejectRef = useRef<null | RefExports>(null);
 
   const toggleMenu = useCallback(() => {
     setMenuOpen(state => !state);
@@ -81,14 +83,13 @@ export const Actions: React.FC<ActionsProps> = ({ orderId, status }) => {
       icon: <Cancel fontSize="small" />,
       action: () => {
         toggleMenu();
-        console.log('Rejected order');
+        rejectRef?.current?.openDialog();
       },
     },
   };
 
   const MENU_GROUPS: MenuGroups = {
     DEFAULT: [MENU_OPTIONS.VIEW],
-    [OrderStatus.PENDING]: [MENU_OPTIONS.VIEW],
     [OrderStatus.AWAITING_CONFIRMATION]: [
       MENU_OPTIONS.VIEW,
       MENU_OPTIONS.ACCEPT,
@@ -134,6 +135,7 @@ export const Actions: React.FC<ActionsProps> = ({ orderId, status }) => {
           ))}
         </List>
       </Popover>
+      <RejectWarning ref={rejectRef} orderId={orderId} type="REJECT" />
     </>
   );
 };

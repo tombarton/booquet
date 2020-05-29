@@ -18,7 +18,7 @@ const addUsers = async (quantity = 15) => {
         lastname: faker.name.lastName(),
         email: faker.internet.email(),
         password:
-          '$2b$10$KOdPXagrEb6LWC4p/9lZ6eof82tmRjIH7lD6XIo2kDQD2Uf/OXKui', // hello-world
+          '$2b$10$V4fiGDldOsbS/pkgJLhDhu13UDq4vzbjXSx1h1HpNmd7.5OeBjyyy', // hello-world
         role: 'USER',
         Order: {
           create: {

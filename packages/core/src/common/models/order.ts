@@ -1,10 +1,15 @@
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import PaginatedResponse from '@common/pagination/pagination';
 import { OrderItem } from './order-item';
-import { OrderStatus } from '@prisma/client';
 import { User } from './user';
 
-registerEnumType(OrderStatus, {
+enum OrderStatusWithoutPending {
+  AWAITING_CONFIRMATION = 'AWAITING_CONFIRMATION',
+  AWAITING_FULFILLMENT = 'AWAITING_FULFILLMENT',
+  FULFILLED = 'FULFILLED',
+}
+
+registerEnumType(OrderStatusWithoutPending, {
   name: 'OrderStatus',
   description: 'Order Status',
 });
@@ -20,8 +25,8 @@ export class Order {
   @Field()
   total: number;
 
-  @Field(type => OrderStatus)
-  status: OrderStatus;
+  @Field(type => OrderStatusWithoutPending)
+  status: OrderStatusWithoutPending;
 
   @Field({ nullable: true })
   chargeId: string;

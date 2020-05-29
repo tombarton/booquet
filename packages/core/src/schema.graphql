@@ -89,7 +89,6 @@ enum OrderSortField {
 
 """Order Status"""
 enum OrderStatus {
-  PENDING
   AWAITING_CONFIRMATION
   AWAITING_FULFILLMENT
   FULFILLED
