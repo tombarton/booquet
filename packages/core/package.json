@@ -34,7 +34,7 @@
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/terminus": "^7.0.1",
     "@prisma/client": "^2.0.0-beta.5",
-    "apollo-server-express": "^2.13.1",
+    "apollo-server-express": "^2.14.2",
     "bcrypt": "^4.0.1",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
