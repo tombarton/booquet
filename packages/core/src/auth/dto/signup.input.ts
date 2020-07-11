@@ -17,4 +17,7 @@ export class SignupInput {
 
   @Field()
   lastname: string;
+
+  @Field({ description: 'Set auth cookies after signup', nullable: true })
+  autoLogin: boolean;
 }

@@ -14,7 +14,7 @@ import { isAfter, addHours } from 'date-fns';
 
 import { SignupInput } from './dto/signup.input';
 import { GraphQLContext } from '@root/types';
-import { Role } from '@common/models/user';
+import { Role } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
 import { ResetPasswordInput } from './dto/reset-password.input';
 import { EmailService, PrismaService, PasswordService } from '@common/services';
@@ -22,6 +22,12 @@ import { EmailService, PrismaService, PasswordService } from '@common/services';
 export enum Cookies {
   SIGNATURE = 'SIGNATURE',
   PARTIAL_JWT = 'PARTIAL_JWT',
+}
+
+interface JWT {
+  header: string;
+  payload: string;
+  signature: string;
 }
 
 @Injectable()
@@ -145,16 +151,15 @@ export class AuthService {
 
   setloginCookies(jwt: string, context: GraphQLContext) {
     return new Promise<void>(res => {
-      const [header, payload, signature] = jwt.split('.');
+      // Extract signature from JWT.
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const signature = this.splitToken(jwt, ['signature']);
 
       // Set signature httpOnly cookie.
       // @TODO: Need to set secure mode in production...
       context.res.cookie(Cookies.SIGNATURE, signature, {
         httpOnly: true,
       });
-
-      // Set remainder of JWT as a standard cookie, accessible via JS.
-      context.res.cookie(Cookies.PARTIAL_JWT, `${header}.${payload}`);
 
       return res();
     });
@@ -167,5 +172,12 @@ export class AuthService {
 
       return res();
     });
+  }
+
+  splitToken(jwt: string, parts?: Array<keyof JWT>) {
+    const split = jwt.split('.');
+    const token = { header: split[0], payload: split[1], signature: split[2] };
+
+    return parts.map(i => `${token[`${i}`]}`).join('.');
   }
 }
