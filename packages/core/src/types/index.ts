@@ -18,3 +18,6 @@ export interface ContentfulEvent {
   date: string;
   availableSpaces: number;
 }
+
+export type NestGraphQLConnectionParams = Record<string, any>;
+export type NestGraphQLWebSocket = Record<string, any>;

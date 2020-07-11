@@ -7,8 +7,8 @@ import { User } from '@prisma/client';
 import { Request } from 'express';
 import { Cookies, AuthService } from '../auth.service';
 
-const AUTH_HEADER = 'authorization';
-const TOKEN_RGX = /(\S+)\s+(\S+)/;
+export const AUTH_HEADER = 'authorization';
+export const TOKEN_RGX = /(\S+)\s+(\S+)/;
 
 export const parseCookie = (cookie: string) =>
   cookie
