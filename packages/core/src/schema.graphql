@@ -112,5 +112,4 @@ type User {
   firstname: String
   lastname: String
   role: Role!
-  password: String!
 }

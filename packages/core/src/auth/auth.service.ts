@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import {
   Injectable,
   ConflictException,
@@ -8,6 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { isAfter, addHours } from 'date-fns';
@@ -81,13 +81,19 @@ export class AuthService {
     return this.jwtService.sign({ userId: user.id, role: user.role });
   }
 
-  validateUser(userId: string): Promise<User> {
-    return this.prisma.user.findOne({ where: { id: userId } });
+  async validateUser(userId: string) {
+    return await this.prisma.user.findOne({ where: { id: userId } });
   }
 
-  getUserFromToken(token: string): Promise<User> {
+  async getUserFromToken(token: string): Promise<User> {
     const id = this.jwtService.decode(token)['userId'];
-    return this.prisma.user.findOne({ where: { id } });
+    const user = await this.prisma.user.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(`No user found for ID: ${id}`);
+    }
+
+    return user;
   }
 
   async forgotPassword(email: string): Promise<boolean> {
@@ -152,7 +158,6 @@ export class AuthService {
   setloginCookies(jwt: string, context: GraphQLContext) {
     return new Promise<void>(res => {
       // Extract signature from JWT.
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const signature = this.splitToken(jwt, ['signature']);
 
       // Set signature httpOnly cookie.

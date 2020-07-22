@@ -5,5 +5,7 @@ import { combinedLink } from './links';
 export const createApolloClient = () =>
   new ApolloClient({
     link: combinedLink,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      addTypename: false,
+    }),
   });
