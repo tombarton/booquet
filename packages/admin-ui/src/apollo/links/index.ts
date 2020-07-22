@@ -2,7 +2,7 @@ import { ApolloLink } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
 
 import { errorLink } from './error';
-import { httpLink } from './http';
+import { authLink } from './http';
 import { retryLink } from './retry';
 import { wsLink } from './ws';
 
@@ -16,5 +16,5 @@ export const combinedLink = ApolloLink.from([errorLink, retryLink]).split(
     );
   },
   wsLink,
-  httpLink
+  authLink
 );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router';
-import { getJWT } from '../utils/getJWT';
+import { useAuthSelector } from '../redux/reducers';
 import { Role } from '../__generated__/globalTypes';
 
 interface AuthGuardProps {
@@ -8,9 +8,9 @@ interface AuthGuardProps {
 }
 
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
-  const jwtPayload = getJWT();
+  const { accessToken, user } = useAuthSelector();
 
-  if (!jwtPayload || jwtPayload.role !== Role.ADMIN) {
+  if (!accessToken || user?.role !== Role.ADMIN) {
     return <RouterRedirect to={{ pathname: '/login' }} />;
   }
 

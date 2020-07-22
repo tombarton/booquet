@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Auth {
+  """JWT access token"""
+  accessToken: String!
+
+  """User details"""
+  user: User!
+}
+
 input BasketInput {
   items: [String!]!
 }
@@ -37,11 +45,11 @@ input LoginInput {
 }
 
 type Mutation {
-  signup(data: SignupInput!): User!
-  login(data: LoginInput!): User!
+  signup(data: SignupInput!): Auth!
+  login(data: LoginInput!): Auth!
   logout: Boolean!
   forgotPassword(data: ForgotPasswordInput!): Boolean!
-  resetPassword(data: ResetPasswordInput!): User!
+  resetPassword(data: ResetPasswordInput!): Auth!
   updateuser(data: UpdateUserInput!): User!
   changePassword(data: ChangePasswordInput!): User!
 }
@@ -82,6 +90,9 @@ input SignupInput {
   password: String!
   firstname: String!
   lastname: String!
+
+  """Set auth cookies after signup"""
+  autoLogin: Boolean
 }
 
 type Subscription {
@@ -95,11 +106,10 @@ input UpdateUserInput {
 
 type User {
   id: ID!
-  createdAt: DateTime!
+  registeredAt: DateTime!
   updatedAt: DateTime!
   email: String!
   firstname: String
   lastname: String
   role: Role!
-  password: String!
 }

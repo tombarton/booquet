@@ -10,6 +10,8 @@ import { HealthModule } from '@core/health/health.module';
 import { RawBodyMiddleware } from '@root/core/middleware/raw-body.middleware';
 import { JsonBodyMiddleware } from '@root/core/middleware/json-body.middleware';
 import { isEnabled, GQL_CONFIG, CORS_CONFIG } from '@core/config';
+import { AUTH_HEADER } from '@root/auth/strategies';
+import { NestGraphQLConnectionParams, NestGraphQLWebSocket } from './types';
 
 @Module({
   imports: [
@@ -31,12 +33,18 @@ import { isEnabled, GQL_CONFIG, CORS_CONFIG } from '@core/config';
           connection,
         }),
         subscriptions: {
-          // @TODO: Improve typings.
           onConnect: (
-            connectionParams: { [key: string]: any },
-            websocket: { [key: string]: any }
+            connectionParams: NestGraphQLConnectionParams,
+            websocket: NestGraphQLWebSocket
           ) => {
-            return { headers: websocket?.upgradeReq?.headers };
+            const { Authorization } = connectionParams;
+
+            return {
+              headers: {
+                ...websocket?.upgradeReq?.headers,
+                [AUTH_HEADER]: Authorization,
+              },
+            };
           },
         },
       }),

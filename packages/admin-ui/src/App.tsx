@@ -1,10 +1,12 @@
 import React from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ThemeProvider, makeStyles, createStyles } from '@material-ui/core';
+import { Provider } from 'react-redux';
 
 import { createApolloClient } from './apollo/client';
 import { createTheme } from './theme';
 import { Routes } from './Routes';
+import { store } from './redux/store';
 
 const client = createApolloClient();
 const theme = createTheme();
@@ -39,10 +41,12 @@ export const App: React.FC = () => {
   useStyles();
 
   return (
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <Routes />
-      </ThemeProvider>
-    </ApolloProvider>
+    <Provider store={store}>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+          <Routes />
+        </ThemeProvider>
+      </ApolloProvider>
+    </Provider>
   );
 };

@@ -1,4 +1,4 @@
-import { Role } from '@common/models/user';
+import { Role } from '@prisma/client';
 
 export interface JwtDto {
   userId: string;

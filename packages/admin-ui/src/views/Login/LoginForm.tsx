@@ -8,13 +8,23 @@ import { useMutation } from '@apollo/react-hooks';
 import Alert from '@material-ui/lab/Alert';
 import { useHistory } from 'react-router';
 import { Role } from '../../__generated__/globalTypes';
-import { Login } from './__generated__/Login';
+import { Login, Login_login as UserData } from './__generated__/Login';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../../redux/actions';
 
 const LOGIN = gql`
   mutation Login($data: LoginInput!) {
     login(data: $data) {
-      id
-      role
+      accessToken
+      user {
+        id
+        registeredAt
+        updatedAt
+        email
+        firstname
+        lastname
+        role
+      }
     }
   }
 `;
@@ -43,10 +53,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ className, ...rest }) => {
   const [login] = useMutation<Login>(LOGIN);
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const onSuccess = useCallback(() => {
-    history.push('/');
-  }, [history]);
+  const onSuccess = useCallback(
+    (userData: UserData) => {
+      dispatch(loginSuccess(userData));
+      history.push('/');
+    },
+    [history, dispatch]
+  );
 
   return (
     <Formik
@@ -58,7 +73,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ className, ...rest }) => {
       validationSchema={validation}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          const loginData = await login({
+          const { data } = await login({
             variables: {
               data: {
                 email: values.email,
@@ -67,14 +82,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ className, ...rest }) => {
             },
           });
 
-          if (loginData.data?.login.role !== Role.ADMIN) {
+          if (data?.login.user.role !== Role.ADMIN) {
             throw new Error(
               'You do not have the permission to access the Admin area.'
             );
           }
-          onSuccess();
+
+          onSuccess(data.login);
         } catch (error) {
-          console.log(JSON.stringify(error));
           setErrors({
             onsubmit: error.message.replace(/(GraphQL error: )/g, ''),
           });

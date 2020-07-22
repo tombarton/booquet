@@ -7,6 +7,9 @@ import { User } from '@prisma/client';
 import { Request } from 'express';
 import { Cookies, AuthService } from '../auth.service';
 
+export const AUTH_HEADER = 'authorization';
+export const TOKEN_RGX = /(\S+)\s+(\S+)/;
+
 export const parseCookie = (cookie: string) =>
   cookie
     .split(';')
@@ -20,15 +23,21 @@ export const JwtFromRequest = (req: Request) => {
   let partialJwt: string;
   let signature: string;
 
-  // Grab cookie from request if present.
-  // We split the JWT in two for security purposes and then piece them back together again here.
+  // Grab the authentication token from the header.
+  if (req.headers[`${AUTH_HEADER}`]) {
+    const header = req.headers[`${AUTH_HEADER}`];
+    const partial = Array.isArray(header) ? header[0] : header;
+
+    partialJwt = partial.match(TOKEN_RGX)[2];
+  }
+
+  // Grab the signature cookie from the request if present.
+  // We split the JWT for security purposes and then piece them back together again here to avoid XSS.
   if (req?.cookies) {
-    partialJwt = req.cookies[Cookies.PARTIAL_JWT];
     signature = req.cookies[Cookies.SIGNATURE];
   } else {
     // Fall back to headers if we can't retrieve them from the paser.
     const cookies = parseCookie(req.headers.cookie);
-    partialJwt = cookies[Cookies.PARTIAL_JWT];
     signature = cookies[Cookies.SIGNATURE];
   }
 

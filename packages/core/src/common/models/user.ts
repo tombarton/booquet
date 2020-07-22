@@ -1,10 +1,11 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import {
+  Field,
+  ObjectType,
+  registerEnumType,
+  HideField,
+} from '@nestjs/graphql';
+import { Role } from '@prisma/client';
 import { Model } from './model';
-
-export enum Role {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
 
 registerEnumType(Role, {
   name: 'Role',
@@ -25,6 +26,6 @@ export class User extends Model {
   @Field(type => Role, { defaultValue: Role.USER })
   role: Role;
 
-  @Field(type => String)
+  @HideField()
   password: string;
 }

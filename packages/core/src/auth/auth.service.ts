@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import {
   Injectable,
   ConflictException,
@@ -8,13 +7,14 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { isAfter, addHours } from 'date-fns';
 
 import { SignupInput } from './dto/signup.input';
 import { GraphQLContext } from '@root/types';
-import { Role } from '@common/models/user';
+import { Role } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
 import { ResetPasswordInput } from './dto/reset-password.input';
 import { EmailService, PrismaService, PasswordService } from '@common/services';
@@ -22,6 +22,12 @@ import { EmailService, PrismaService, PasswordService } from '@common/services';
 export enum Cookies {
   SIGNATURE = 'SIGNATURE',
   PARTIAL_JWT = 'PARTIAL_JWT',
+}
+
+interface JWT {
+  header: string;
+  payload: string;
+  signature: string;
 }
 
 @Injectable()
@@ -75,13 +81,19 @@ export class AuthService {
     return this.jwtService.sign({ userId: user.id, role: user.role });
   }
 
-  validateUser(userId: string): Promise<User> {
-    return this.prisma.user.findOne({ where: { id: userId } });
+  async validateUser(userId: string) {
+    return await this.prisma.user.findOne({ where: { id: userId } });
   }
 
-  getUserFromToken(token: string): Promise<User> {
+  async getUserFromToken(token: string): Promise<User> {
     const id = this.jwtService.decode(token)['userId'];
-    return this.prisma.user.findOne({ where: { id } });
+    const user = await this.prisma.user.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(`No user found for ID: ${id}`);
+    }
+
+    return user;
   }
 
   async forgotPassword(email: string): Promise<boolean> {
@@ -145,16 +157,14 @@ export class AuthService {
 
   setloginCookies(jwt: string, context: GraphQLContext) {
     return new Promise<void>(res => {
-      const [header, payload, signature] = jwt.split('.');
+      // Extract signature from JWT.
+      const signature = this.splitToken(jwt, ['signature']);
 
       // Set signature httpOnly cookie.
       // @TODO: Need to set secure mode in production...
       context.res.cookie(Cookies.SIGNATURE, signature, {
         httpOnly: true,
       });
-
-      // Set remainder of JWT as a standard cookie, accessible via JS.
-      context.res.cookie(Cookies.PARTIAL_JWT, `${header}.${payload}`);
 
       return res();
     });
@@ -167,5 +177,12 @@ export class AuthService {
 
       return res();
     });
+  }
+
+  splitToken(jwt: string, parts?: Array<keyof JWT>) {
+    const split = jwt.split('.');
+    const token = { header: split[0], payload: split[1], signature: split[2] };
+
+    return parts.map(i => `${token[`${i}`]}`).join('.');
   }
 }
