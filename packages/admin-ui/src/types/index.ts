@@ -1,3 +1,5 @@
+import { Role } from '../__generated__/globalTypes';
+
 type Primitive =
   | string
   | Function
@@ -27,4 +29,11 @@ export type DeepOmit<T, K> = T extends Primitive
 
 export type DeepUndefined<T> = {
   [P in keyof T]: DeepUndefined<T[P]> | undefined;
+};
+
+export type JWT = {
+  exp: number;
+  iat: number;
+  role: Role;
+  userId: string;
 };

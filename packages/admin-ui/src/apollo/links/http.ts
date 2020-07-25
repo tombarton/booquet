@@ -1,6 +1,6 @@
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
-import { store } from '../../redux/store';
+import AuthService from '../../services/auth';
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -11,7 +11,7 @@ const httpLink = new HttpLink({
 
 // Add Bearer token to header.
 export const authLink = setContext((_, { headers }) => {
-  const token = store.getState().auth.accessToken;
+  const token = AuthService.getAccessToken();
 
   return {
     headers: {

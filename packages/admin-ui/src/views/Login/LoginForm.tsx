@@ -11,8 +11,9 @@ import { Role } from '../../__generated__/globalTypes';
 import { Login, Login_login as UserData } from './__generated__/Login';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../redux/actions';
+import AuthService from '../../services/auth';
 
-const LOGIN = gql`
+export const LOGIN = gql`
   mutation Login($data: LoginInput!) {
     login(data: $data) {
       accessToken
@@ -57,6 +58,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ className, ...rest }) => {
 
   const onSuccess = useCallback(
     (userData: UserData) => {
+      AuthService.setAccessToken(userData.accessToken);
       dispatch(loginSuccess(userData));
       history.push('/');
     },
