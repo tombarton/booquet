@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   makeStyles,
@@ -21,8 +21,6 @@ import PerfectScrollBar from 'react-perfect-scrollbar';
 import { format } from 'date-fns';
 import { ArrowRight as ArrowRightIcon } from 'react-feather';
 import { Label } from '../../components/Label';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
 
 interface OrdersProps {
   className?: string;
@@ -56,20 +54,8 @@ const useStyles = makeStyles(() => ({
   root: {},
 }));
 
-const GET_ALL_USERS = gql`
-  query GetAllUsers {
-    getAllUsers {
-      id
-    }
-  }
-`;
-
 export const Orders: React.FC<OrdersProps> = ({ className, ...rest }) => {
-  console.log('Orders re-rendering...');
   const classes = useStyles();
-  const { data, loading, error } = useQuery(GET_ALL_USERS);
-
-  console.log(data, loading, error);
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>

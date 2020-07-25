@@ -18,7 +18,6 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/yup": "^0.29.0",
-    "@welldone-software/why-did-you-render": "^4.2.7",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link": "^1.2.14",
