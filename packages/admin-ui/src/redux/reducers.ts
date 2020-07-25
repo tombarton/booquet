@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { loginSuccess, logout } from './actions';
 import { DeepUndefined } from '../types';
 import { RootState } from './store';
-import { Login_login } from '../views/Login/__generated__/Login';
+import { LoginSuccessPayload } from './actions';
 
-type UserState = DeepUndefined<Login_login>;
+type UserState = DeepUndefined<LoginSuccessPayload>;
 
 const initialState: UserState = {
   accessToken: undefined,

@@ -7,6 +7,7 @@ import { createApolloClient } from './apollo/client';
 import { createTheme } from './theme';
 import { Routes } from './Routes';
 import { store } from './redux/store';
+import { Auth } from './components/Auth';
 
 const client = createApolloClient();
 const theme = createTheme();
@@ -44,7 +45,9 @@ export const App: React.FC = () => {
     <Provider store={store}>
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
-          <Routes />
+          <Auth>
+            <Routes />
+          </Auth>
         </ThemeProvider>
       </ApolloProvider>
     </Provider>

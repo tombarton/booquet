@@ -21,7 +21,6 @@ import { EmailService, PrismaService, PasswordService } from '@common/services';
 
 export enum Cookies {
   SIGNATURE = 'SIGNATURE',
-  PARTIAL_JWT = 'PARTIAL_JWT',
 }
 
 interface JWT {
@@ -173,7 +172,6 @@ export class AuthService {
   clearLoginCookies(context: GraphQLContext) {
     return new Promise<void>(res => {
       context.res.clearCookie(Cookies.SIGNATURE);
-      context.res.clearCookie(Cookies.PARTIAL_JWT);
 
       return res();
     });

@@ -14,11 +14,6 @@ import { PrismaService } from '@common/services/prisma.service';
 import { asyncForEach } from '@common/utils/asyncForEach';
 import { ContentfulProduct, ContentfulEvent } from '@root/types';
 
-export enum Cookies {
-  SIGNATURE = 'SIGNATURE',
-  PARTIAL_JWT = 'PARTIAL_JWT',
-}
-
 @Injectable()
 export class ContentfulService {
   contentfulClient: DeliveryClientAPI;

@@ -7,6 +7,7 @@ import gql from 'graphql-tag';
 import { useHistory } from 'react-router';
 import { logout as logoutAction } from '../redux/actions';
 import { Logout as LogoutGQL } from './__generated__/Logout';
+import AuthService from '../services/auth';
 
 const LOGOUT = gql`
   mutation Logout {
@@ -21,9 +22,15 @@ export const Logout = memo(() => {
   const dispatch = useDispatch();
 
   const onLogout = useCallback(async () => {
+    // Delete server side cookie.
     await logout();
-    await client.resetStore();
+    // Remove token from local storage.
+    AuthService.removeAccessToken();
+    // Reset Redux store.
     dispatch(logoutAction());
+    // Reset GraphQL store.
+    await client.resetStore();
+    // Redirect to login page.
     history.push('/login');
   }, [client, history, logout, dispatch]);
 
