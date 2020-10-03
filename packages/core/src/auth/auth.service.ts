@@ -80,7 +80,7 @@ export class AuthService {
     );
 
     if (!passwordValid) {
-      throw new ForbiddenException('Invalid password');
+      throw new UnauthorizedException('Invalid password');
     }
 
     return await this.generateTokens(user);
@@ -95,7 +95,7 @@ export class AuthService {
     const tokenMatch = await compare(refreshToken, user.refreshTokenHash);
 
     if (!tokenMatch) {
-      throw new ForbiddenException('Invalid refresh token');
+      throw new UnauthorizedException('Invalid refresh token');
     }
     return user;
   }
