@@ -23,7 +23,7 @@ export class DatabaseHealthIndicator extends HealthIndicator {
     try {
       await promiseTimeout(
         this.timeout,
-        this.prisma.product.findMany({ first: 1 })
+        this.prisma.product.findMany({ take: 1 })
       );
       return this.getStatus(key, true);
     } catch (err) {

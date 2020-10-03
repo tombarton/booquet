@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService, PasswordService } from '@common/services';
 import { UpdateUserInput } from './dto/update-user.input';
 import { ChangePasswordInput } from './dto/change-password.input';
@@ -32,7 +32,7 @@ export class UserService {
     );
 
     if (!passwordValid) {
-      throw new ForbiddenException('Invalid password');
+      throw new UnauthorizedException('Invalid password');
     }
 
     // Hash new password and update user.

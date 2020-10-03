@@ -47,6 +47,7 @@ input LoginInput {
 type Mutation {
   signup(data: SignupInput!): Auth!
   login(data: LoginInput!): Auth!
+  refreshAccessToken: Auth!
   logout: Boolean!
   forgotPassword(data: ForgotPasswordInput!): Boolean!
   resetPassword(data: ResetPasswordInput!): Auth!
