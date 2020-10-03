@@ -7,6 +7,10 @@ import { LoginInput } from './dto/login.input';
 import { ResetPasswordInput } from './dto/reset-password.input';
 import { ForgotPasswordInput } from './dto/forgot-password.input';
 import { Auth } from '@common/models';
+import { User } from '@prisma/client';
+import { CurrentUser } from '@common/decorators';
+import { UseGuards } from '@nestjs/common';
+import { GqlRefreshGuard } from '@common/guards';
 
 @Resolver(of => Auth)
 export class AuthResolver {
@@ -28,10 +32,10 @@ export class AuthResolver {
     @Args('data') data: SignupInput
   ): Promise<Auth> {
     data.email = data.email.toLowerCase();
-    const accessToken = await this.auth.createUser(data);
+    const { accessToken, refreshToken } = await this.auth.createUser(data);
 
     if (data.autoLogin) {
-      await this.auth.setloginCookies(accessToken, context);
+      await this.auth.setloginCookies({ accessToken, refreshToken }, context);
     }
 
     return this.authResponse(accessToken);
@@ -42,8 +46,24 @@ export class AuthResolver {
     @Context() context: GraphQLContext,
     @Args('data') { email, password }: LoginInput
   ): Promise<Auth> {
-    const accessToken = await this.auth.login(email.toLowerCase(), password);
-    await this.auth.setloginCookies(accessToken, context);
+    const { accessToken, refreshToken } = await this.auth.login(
+      email.toLowerCase(),
+      password
+    );
+    await this.auth.setloginCookies({ accessToken, refreshToken }, context);
+
+    return this.authResponse(accessToken);
+  }
+
+  @UseGuards(GqlRefreshGuard)
+  @Mutation(returns => Auth)
+  async refreshAccessToken(
+    @Context() context: GraphQLContext,
+    @CurrentUser() user: User
+  ) {
+    const { accessToken } = await this.auth.generateTokens(user, false);
+
+    await this.auth.setloginCookies({ accessToken }, context);
 
     return this.authResponse(accessToken);
   }
@@ -73,13 +93,10 @@ export class AuthResolver {
   ): Promise<Auth> {
     const user = await this.auth.resetPassword(data);
 
-    const accessToken = this.jwtService.sign({
-      userId: user.id,
-      role: user.role,
-    });
+    const { accessToken, refreshToken } = await this.auth.generateTokens(user);
 
     if (data.autoLogin) {
-      await this.auth.setloginCookies(accessToken, context);
+      await this.auth.setloginCookies({ accessToken, refreshToken }, context);
     }
 
     return this.authResponse(accessToken);
