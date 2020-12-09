@@ -1,12 +1,14 @@
 {
   "name": "booquet",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/**"
+    ]
+  },
   "scripts": {
-    "start:fe": "yarn --cwd ./packages/admin-ui start",
-    "start:be": "yarn --cwd ./packages/core start:dev",
+    "admin-ui": "yarn workspace @booquet/admin-ui",
+    "core": "yarn workspace @booquet/core",
     "test": "yarn workspaces run test"
   },
   "devDependencies": {
@@ -16,6 +18,10 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-security": "^1.4.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
