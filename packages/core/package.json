@@ -61,6 +61,7 @@
     "@types/bcrypt": "^3.0.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/ioredis": "^4.17.8",
+    "@types/jest": "^26.0.18",
     "@types/passport-jwt": "^3.0.3",
     "@types/supertest": "^2.0.10",
     "supertest": "^6.0.1",
