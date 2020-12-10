@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
-import { JwtDto } from '../dto/jwt.dto';
 import { Request } from 'express';
+import { JwtDto } from '../dto/jwt.dto';
 import { Cookies, AuthService } from '../auth.service';
 
 export const AUTH_HEADER = 'authorization';

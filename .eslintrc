@@ -8,10 +8,7 @@
       "plugin:security/recommended",
       "plugin:prettier/recommended",
       "plugin:react/recommended",
-      "plugin:react-hooks/recommended",
-      "plugin:import/errors",
-      "plugin:import/warnings",
-      "plugin:import/typescript"
+      "plugin:react-hooks/recommended"
   ],
   "env": {
     "browser": true,
@@ -31,7 +28,6 @@
   "rules": {
     "react/prop-types": "off",
     "react/display-name": "off",
-    "import/order": ["error"],
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",

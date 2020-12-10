@@ -1,3 +1,4 @@
+import { randomBytes } from 'crypto';
 import {
   Injectable,
   ConflictException,
@@ -6,17 +7,16 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
+import { User, Role } from '@prisma/client';
 import { compare, hash } from 'bcrypt';
-import { randomBytes } from 'crypto';
 import { isAfter, addHours } from 'date-fns';
 
-import { SignupInput } from './dto/signup.input';
 import { GraphQLContext } from '@root/types';
-import { Role } from '@prisma/client';
+
 import { ConfigService } from '@nestjs/config';
-import { ResetPasswordInput } from './dto/reset-password.input';
 import { EmailService, PrismaService, PasswordService } from '@common/services';
+import { SignupInput } from './dto/signup.input';
+import { ResetPasswordInput } from './dto/reset-password.input';
 
 export enum Cookies {
   SIGNATURE = 'SIGNATURE',

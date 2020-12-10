@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService, PasswordService } from '@common/services';
+import { User } from '@common/models/user';
 import { UpdateUserInput } from './dto/update-user.input';
 import { ChangePasswordInput } from './dto/change-password.input';
-import { User } from '@common/models/user';
 
 @Injectable()
 export class UserService {

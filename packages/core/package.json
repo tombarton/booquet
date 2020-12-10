@@ -21,7 +21,6 @@
     "prisma:save": "npx prisma migrate save --experimental",
     "prisma:update": "npx prisma migrate up --experimental",
     "prisma:generate": "npx prisma generate",
-    "postinstall": "yarn prisma:generate",
     "docker:base": "docker build -f Dockerfile.base -t booquet/base ."
   },
   "dependencies": {
@@ -31,7 +30,7 @@
     "@nestjs/graphql": "^7.9.1",
     "@nestjs/jwt": "^7.2.0",
     "@nestjs/passport": "^7.1.5",
-    "@nestjs/platform-express": "^7.5.5",
+    "@nestjs/platform-express": "^7.5.1",
     "@nestjs/terminus": "^7.0.1",
     "@prisma/client": "^2.13.0",
     "apollo-server-express": "^2.19.0",
@@ -61,7 +60,6 @@
     "@prisma/cli": "^2.13.0",
     "@types/bcrypt": "^3.0.0",
     "@types/cookie-parser": "^1.4.2",
-    "@types/express": "^4.17.9",
     "@types/ioredis": "^4.17.8",
     "@types/passport-jwt": "^3.0.3",
     "@types/supertest": "^2.0.10",
@@ -88,10 +86,5 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged --pattern '**/*.*(ts|tsx)' && tsc --incremental false --noEmit"
-    }
   }
 }

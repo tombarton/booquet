@@ -28,7 +28,7 @@ export class StripeService {
     private readonly configService: ConfigService
   ) {
     this.stripeAPI = new Stripe(this.configService.get('STRIPE_API_KEY'), {
-      apiVersion: '2020-03-02',
+      apiVersion: '2020-08-27',
     });
   }
 

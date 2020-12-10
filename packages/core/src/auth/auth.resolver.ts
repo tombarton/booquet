@@ -1,16 +1,16 @@
-import { AuthService } from './auth.service';
-import { JwtService } from '@nestjs/jwt';
 import { Mutation, Resolver, Args, Context } from '@nestjs/graphql';
-import { SignupInput } from './dto/signup.input';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
+import { UseGuards } from '@nestjs/common';
 import { GraphQLContext } from '@root/types';
+import { Auth } from '@common/models';
+import { CurrentUser } from '@common/decorators';
+import { GqlRefreshGuard } from '@common/guards';
+import { AuthService } from './auth.service';
+import { SignupInput } from './dto/signup.input';
 import { LoginInput } from './dto/login.input';
 import { ResetPasswordInput } from './dto/reset-password.input';
 import { ForgotPasswordInput } from './dto/forgot-password.input';
-import { Auth } from '@common/models';
-import { User } from '@prisma/client';
-import { CurrentUser } from '@common/decorators';
-import { UseGuards } from '@nestjs/common';
-import { GqlRefreshGuard } from '@common/guards';
 
 @Resolver(of => Auth)
 export class AuthResolver {
