@@ -39,7 +39,7 @@ jobs:
       - name: Artifical wait for Docker compose
         uses: jakejarvis/wait-action@master
         with:
-          time: '10s'
+          time: '30s'
 
       - name: Debug
         run: |
