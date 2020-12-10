@@ -13,8 +13,18 @@
     "postinstall": "yarn core prisma:generate"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
     "@types/node": "^14.0.4",
+    "@types/jwt-decode": "^2.2.1",
+    "@types/react-helmet": "^6.0.0",
+    "@types/react-redux": "^7.1.9",
+    "@types/react-router": "^5.1.7",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/jest": "^24.0.0",
+    "@types/js-cookie": "^2.2.6",
+    "@types/nprogress": "^0.2.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@types/yup": "^0.29.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "eslint": "^6.8.0",
@@ -35,5 +45,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged --pattern '**/*.*(ts|tsx)'"
     }
+  },
+  "resolutions": {
+    "@types/react": "^16.9.0"
   }
 }

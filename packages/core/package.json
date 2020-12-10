@@ -18,8 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prisma:save": "npx prisma migrate save --experimental",
-    "prisma:update": "npx prisma migrate up --experimental",
+    "prisma:save": "npx prisma migrate dev --preview-feature",
+    "prisma:update": "npx prisma migrate deploy --preview-feature",
     "prisma:generate": "npx prisma generate",
     "docker:base": "docker build -f Dockerfile.base -t booquet/base ."
   },
