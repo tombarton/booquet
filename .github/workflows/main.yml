@@ -30,8 +30,7 @@ jobs:
 
       - name: Build, tag and run docker image
         run: |
-
-          docker-compose -f docker-compose.ci.yml build
+          COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1  docker-compose -f docker-compose.ci.yml build
           docker tag booquet/app:latest booquet/app:${{github.sha}}
           docker-compose -f docker-compose.ci.yml up -d
         env:

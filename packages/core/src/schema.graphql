@@ -2,21 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Auth {
-  """JWT access token"""
-  accessToken: String!
-
-  """User details"""
-  user: User!
-}
-
-input BasketInput {
-  items: [String!]!
-}
-
-input ChangePasswordInput {
-  oldPassword: String!
-  newPassword: String!
+type User {
+  id: ID!
+  registeredAt: DateTime!
+  updatedAt: DateTime!
+  email: String!
+  firstname: String
+  lastname: String
+  role: Role!
 }
 
 """
@@ -24,35 +17,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Event {
-  id: String!
-  title: String!
-  totalCapacity: Float!
-  remainingCapacity: Float!
-}
-
-input EventCapacityInput {
-  id: String!
-}
-
-input ForgotPasswordInput {
-  email: String!
-}
-
-input LoginInput {
-  email: String!
-  password: String!
-}
-
-type Mutation {
-  signup(data: SignupInput!): Auth!
-  login(data: LoginInput!): Auth!
-  refreshAccessToken: Auth!
-  logout: Boolean!
-  forgotPassword(data: ForgotPasswordInput!): Boolean!
-  resetPassword(data: ResetPasswordInput!): Auth!
-  updateuser(data: UpdateUserInput!): User!
-  changePassword(data: ChangePasswordInput!): User!
+"""User role"""
+enum Role {
+  ADMIN
+  USER
 }
 
 type PaymentIntent {
@@ -66,6 +34,21 @@ type Product {
   price: Float!
 }
 
+type Event {
+  id: String!
+  title: String!
+  totalCapacity: Float!
+  remainingCapacity: Float!
+}
+
+type Auth {
+  """JWT access token"""
+  accessToken: String!
+
+  """User details"""
+  user: User!
+}
+
 type Query {
   getIntent(data: BasketInput): PaymentIntent!
   getAllProducts: [Product!]!
@@ -74,16 +57,23 @@ type Query {
   getAllUsers: [User!]!
 }
 
-input ResetPasswordInput {
-  resetTokenHash: String!
-  newPassword: String!
-  autoLogin: Boolean
+input BasketInput {
+  items: [String!]!
 }
 
-"""User role"""
-enum Role {
-  ADMIN
-  USER
+input EventCapacityInput {
+  id: String!
+}
+
+type Mutation {
+  signup(data: SignupInput!): Auth!
+  login(data: LoginInput!): Auth!
+  refreshAccessToken: Auth!
+  logout: Boolean!
+  forgotPassword(data: ForgotPasswordInput!): Boolean!
+  resetPassword(data: ResetPasswordInput!): Auth!
+  updateuser(data: UpdateUserInput!): User!
+  changePassword(data: ChangePasswordInput!): User!
 }
 
 input SignupInput {
@@ -96,8 +86,19 @@ input SignupInput {
   autoLogin: Boolean
 }
 
-type Subscription {
-  UPDATE_USER: User!
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input ForgotPasswordInput {
+  email: String!
+}
+
+input ResetPasswordInput {
+  resetTokenHash: String!
+  newPassword: String!
+  autoLogin: Boolean
 }
 
 input UpdateUserInput {
@@ -105,12 +106,11 @@ input UpdateUserInput {
   lastname: String
 }
 
-type User {
-  id: ID!
-  registeredAt: DateTime!
-  updatedAt: DateTime!
-  email: String!
-  firstname: String
-  lastname: String
-  role: Role!
+input ChangePasswordInput {
+  oldPassword: String!
+  newPassword: String!
+}
+
+type Subscription {
+  UPDATE_USER: User!
 }

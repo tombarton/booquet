@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { useApolloClient } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import { SplashScreen } from './Splash';
 import AuthService from '../services/auth';
 import { loginSuccess } from '../redux/actions';
+import { SplashScreen } from './Splash';
 import { User } from './__generated__/User';
 
 const USER = gql`

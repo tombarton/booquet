@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ProductsResolver } from './products.resolver';
 import { SharedServices } from '@common/services';
+import { ProductsResolver } from './products.resolver';
 import { EventsModule } from './events/events.module';
 
 @Module({

@@ -1,21 +1,33 @@
 {
-  "parser":  "@typescript-eslint/parser",  // Specifies the ESLint parser
+  "root": true,
+  "parser":  "@typescript-eslint/parser",
+  "plugins": ["react-hooks"],
   "extends":  [
+    "prettier/@typescript-eslint",
       "plugin:@typescript-eslint/recommended",
       "plugin:security/recommended",
-      "prettier/@typescript-eslint",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended"
   ],
-  "parserOptions": {
-    "project": "tsconfig.json",
-    "sourceType": "module"
-  },
-  "root": true,
   "env": {
+    "browser": true,
     "node": true,
     "jest": true
   },
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "sourceType": "module",
+    "ecmaVersion": 2020
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "rules": {
+    "react/prop-types": "off",
+    "react/display-name": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",

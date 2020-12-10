@@ -1,15 +1,14 @@
-import { Resolver, Mutation, Args, Subscription } from '@nestjs/graphql';
-import { User } from '@common/models/user';
-import { UserService } from './user.service';
-import { GqlAuthGuard } from '@common/guards/gql-auth.guard';
-import { UseGuards, Inject } from '@nestjs/common';
-import { Query } from '@nestjs/graphql';
-import { CurrentUser } from '@common/decorators/user.decorator';
-import { UpdateUserInput } from './dto/update-user.input';
-import { Roles } from '@common/decorators/roles.decorator';
+import { Resolver, Query, Mutation, Args, Subscription } from '@nestjs/graphql';
 import { Role } from '@prisma/client';
-import { RolesGuard } from '@common/guards/role.guard';
+import { UseGuards, Inject } from '@nestjs/common';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
+import { User } from '@common/models/user';
+import { GqlAuthGuard } from '@common/guards/gql-auth.guard';
+import { CurrentUser } from '@common/decorators/user.decorator';
+import { Roles } from '@common/decorators/roles.decorator';
+import { RolesGuard } from '@common/guards/role.guard';
+import { UpdateUserInput } from './dto/update-user.input';
+import { UserService } from './user.service';
 import { ChangePasswordInput } from './dto/change-password.input';
 
 @Resolver(of => User)
