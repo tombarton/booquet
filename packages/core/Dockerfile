@@ -12,16 +12,16 @@ ENV PRISMA_DB_URL "$PRISMA_DB_URL"
 RUN npm install -g @prisma/cli --unsafe-perm
 
 # Copy over pre-dependency items.
-COPY ./prisma/schema.prisma ./
-COPY package.json ./
+COPY ./packages/core/prisma/schema.prisma ./
+COPY ./packages/core/package.json ./
 COPY yarn.lock ./
 
 # Install dependencies.
 RUN yarn
 
 # Copy over everything else.
-COPY tsconfig*.json ./
-COPY src ./src
+COPY ./packages/core/tsconfig*.json ./
+COPY ./packages/core/src ./src
 
 RUN npx tsc --showConfig
 

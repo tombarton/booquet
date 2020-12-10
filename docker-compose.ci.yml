@@ -3,7 +3,8 @@ services:
   booquet:
     image: booquet/app
     build:
-      context: ./packages/core
+      context: .
+      dockerfile: ./packages/core/Dockerfile
       args:
         - PRISMA_DB_URL=${PRISMA_DB_URL}
     ports:
