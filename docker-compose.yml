@@ -1,20 +1,21 @@
 version: '3.7'
 services:
-  # booquet:
-  #   image: booquet/app
-  #   build:
-  #     context: ./packages/core
-  #     args:
-  #       - PRISMA_DB_URL=${PRISMA_DB_URL}
-  #   ports:
-  #     - 4000:4000
-  #   env_file:
-  #     - ./.env
-  #   environment:
-  #     # Override REDIS_HOST in local development to point at internal docker network.
-  #     - REDIS_HOST=gql-subscriptions
-  #   depends_on:
-  #     - redis
+  booquet:
+    image: booquet/app
+    build:
+      context: ./packages/core
+      args:
+        - PRISMA_DB_URL=${PRISMA_DB_URL}
+    ports:
+      - 4000:4000
+    env_file:
+      - ./.env
+    environment:
+      # Override REDIS_HOST in local development to point at internal docker network.
+      - REDIS_HOST=gql-subscriptions
+    depends_on:
+      - redis
+      - postgres
   redis:
     image: redis:6-alpine
     container_name: gql-subscriptions
@@ -30,9 +31,9 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: booquet
+      POSTGRES_USER: ${PRISMA_USERNAME}
+      POSTGRES_PASSWORD: ${PRISMA_PASSWORD}
+      POSTGRES_DB: ${PRISMA_DB_NAME}
     volumes:
       - postgres:/var/lib/postgresql/data
 
