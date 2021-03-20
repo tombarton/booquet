@@ -42,7 +42,7 @@ export class StripeService {
     // Process the user basket as a priority.
     if (user) {
       // Find the user's basket.
-      const basket = await this.prisma.cart.findOne({
+      const basket = await this.prisma.cart.findUnique({
         where: { userId: user.id },
         include: { CartItems: { include: { product: true } } },
       });
@@ -151,8 +151,8 @@ export class StripeService {
     return await this.stripeAPI.paymentIntents.create({
       amount,
       currency: 'gbp',
-      payment_method_types: ['card'], // eslint-disable-line @typescript-eslint/camelcase
-      capture_method: 'manual', // eslint-disable-line @typescript-eslint/camelcase
+      payment_method_types: ['card'],
+      capture_method: 'manual',
       metadata: {
         orderId,
       },

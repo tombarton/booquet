@@ -3,7 +3,8 @@
     "strict": true,
     "declaration": true,
     "module": "commonjs",
-    "jsx": "react",
-    "sourceMap": true
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "skipLibCheck": true
   }
 }

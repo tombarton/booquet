@@ -18,6 +18,8 @@ COPY yarn.lock ./
 
 # Install dependencies.
 RUN yarn
+# Add @types/jest back in due to build issues.
+RUN yarn add @types/jest
 
 # Copy over everything else.
 COPY ./packages/core/tsconfig*.json ./
