@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import NProgress from 'nprogress';
 import { Box, LinearProgress, makeStyles } from '@material-ui/core';
 
@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const LoadingScreen = () => {
+export const LoadingScreen: FC = () => {
   const classes = useStyles();
 
   useEffect(() => {
