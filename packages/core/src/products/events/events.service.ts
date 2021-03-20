@@ -11,7 +11,7 @@ export class EventsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getRemainingPlaces(id: string): Promise<Event> {
-    const event = await this.prisma.event.findOne({
+    const event = await this.prisma.event.findUnique({
       where: { id },
       include: { participants: true },
     });

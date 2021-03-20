@@ -49,7 +49,7 @@ export class UserService {
   }
 
   async getCartItems(userId: string) {
-    return await this.prisma.cart.findOne({
+    return await this.prisma.cart.findUnique({
       where: { userId },
       include: { CartItems: true },
     });

@@ -68,7 +68,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string): Promise<Tokens> {
-    const user = await this.prisma.user.findOne({ where: { email } });
+    const user = await this.prisma.user.findUnique({ where: { email } });
 
     if (!user) {
       throw new NotFoundException(`No user found for email ${email}`);
@@ -87,11 +87,11 @@ export class AuthService {
   }
 
   async validateUser(userId: string) {
-    return await this.prisma.user.findOne({ where: { id: userId } });
+    return await this.prisma.user.findUnique({ where: { id: userId } });
   }
 
   async validateRefreshToken(userId: string, refreshToken: string) {
-    const user = await this.prisma.user.findOne({ where: { id: userId } });
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
     const tokenMatch = await compare(refreshToken, user.refreshTokenHash);
 
     if (!tokenMatch) {
@@ -102,7 +102,7 @@ export class AuthService {
 
   async getUserFromToken(token: string): Promise<User> {
     const id = this.jwtService.decode(token)['userId'];
-    const user = await this.prisma.user.findOne({ where: { id } });
+    const user = await this.prisma.user.findUnique({ where: { id } });
 
     if (!user) {
       throw new NotFoundException(`No user found for ID: ${id}`);
@@ -112,7 +112,7 @@ export class AuthService {
   }
 
   async forgotPassword(email: string): Promise<boolean> {
-    const user = await this.prisma.user.findOne({ where: { email } });
+    const user = await this.prisma.user.findUnique({ where: { email } });
 
     if (!user) {
       throw new NotFoundException(`No user found for email ${email}`);
@@ -148,7 +148,7 @@ export class AuthService {
     resetTokenHash,
     newPassword,
   }: ResetPasswordInput): Promise<User> {
-    const user = await this.prisma.user.findOne({
+    const user = await this.prisma.user.findUnique({
       where: { resetToken: resetTokenHash },
     });
 
