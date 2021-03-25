@@ -61,8 +61,9 @@ export class AuthService {
         },
       });
 
-      return await this.generateTokens(user);
+      return this.generateTokens(user);
     } catch (err) {
+      console.error(err);
       throw new ConflictException(`Email ${payload.email} is already in use.`);
     }
   }

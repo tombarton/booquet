@@ -20,7 +20,7 @@ export class OptionalStrategy extends PassportStrategy(Strategy, 'optional') {
     });
   }
 
-  async validate(payload: JwtDto): Promise<User> {
+  async validate(payload: JwtDto): Promise<User | null> {
     const user = await this.authService.validateUser(payload.userId);
 
     if (!user) {

@@ -1,5 +1,5 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ContentfulModule } from '@root/contentful/contentful.module';
 import { StripeModule } from '@root/stripe/stripe.module';
@@ -12,10 +12,11 @@ import { JsonBodyMiddleware } from '@root/core/middleware/json-body.middleware';
 import { isEnabled, GQL_CONFIG, CORS_CONFIG } from '@core/config';
 import { AUTH_HEADER } from '@root/auth/strategies';
 import { NestGraphQLConnectionParams, NestGraphQLWebSocket } from './types';
+import { ConfigModule } from './config/config.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule,
     GraphQLModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         autoSchemaFile: GQL_CONFIG.schemaPath,

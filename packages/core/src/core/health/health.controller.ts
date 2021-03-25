@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import {
   HealthCheckService,
-  DNSHealthIndicator,
+  HttpHealthIndicator,
   HealthCheck,
 } from '@nestjs/terminus';
 import { ConfigService } from '@nestjs/config';
@@ -12,7 +12,7 @@ import { RedisHealthIndicator } from './custom-checks/redis.health';
 export class HealthController {
   constructor(
     private health: HealthCheckService,
-    private dns: DNSHealthIndicator,
+    private http: HttpHealthIndicator,
     private dbHealth: DatabaseHealthIndicator,
     private redisHealth: RedisHealthIndicator,
     private readonly configService: ConfigService
@@ -21,17 +21,12 @@ export class HealthController {
   @Get()
   @HealthCheck()
   healthCheck() {
+    const FE_URL = this.configService.get<string>('FE_URL');
+    const BE_URL = this.configService.get<string>('BE_URL');
+
     return this.health.check([
-      () =>
-        this.dns.pingCheck(
-          'front-end',
-          `https://${this.configService.get('FE_URL')}`
-        ),
-      () =>
-        this.dns.pingCheck(
-          'back-end',
-          `https://${this.configService.get('BE_URL')}`
-        ),
+      () => this.http.pingCheck('front-end', `https://${FE_URL}`),
+      () => this.http.pingCheck('back-end', `https://${BE_URL}`),
       () => this.dbHealth.isHealthy('database'),
       () => this.redisHealth.isHealthy('redis'),
     ]);
