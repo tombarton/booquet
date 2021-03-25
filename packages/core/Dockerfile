@@ -8,9 +8,6 @@ WORKDIR /app
 ARG PRISMA_DB_URL
 ENV PRISMA_DB_URL "$PRISMA_DB_URL"
 
-# Install Prisma Global CLI.
-RUN npm install -g @prisma/cli --unsafe-perm
-
 # Copy over pre-dependency items.
 COPY ./packages/core/prisma/schema.prisma ./
 COPY ./packages/core/package.json ./

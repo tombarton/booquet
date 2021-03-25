@@ -14,6 +14,6 @@ export const CORS_CONFIG: CorsOptions = {
   credentials: true,
 };
 
-export const isEnabled = (enabled: string): boolean => {
-  return enabled === '1';
+export const isEnabled = (enabled: number): boolean => {
+  return enabled === 1;
 };
