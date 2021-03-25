@@ -11,17 +11,22 @@ services:
       - 4000:4000
     environment:
       # A mix of fake and real data, depending on the variable.
-      - REDIS_HOST=gql-subscriptions
-      - PRISMA_DB_URL=${PRISMA_DB_URL}
-      - JWT_SECRET=hello-world
-      - BCRYPT_SALT_OR_ROUNDS=10
-      - POSTMARK_KEY=hello-world
-      - CONTENTFUL_MANAGEMENT_TOKEN=hello-world
-      - CONTENTFUL_ACCESS_TOKEN=hello-world
-      - CONTENTFUL_SPACE=hello-world
-      - CONTENTFUL_ENVIRONMENT=staging
       - FE_URL=docs.nestjs.com
       - BE_URL=docs.nestjs.com
+      - PRISMA_DB_URL=${PRISMA_DB_URL}
+      - JWT_SECRET=hello-world
+      - REFRESH_SECRET=hello-world
+      - POSTMARK_KEY=hello-world
+      - EMAIL_FROM_ADDRESS=test@test.com
+      - CONTENTFUL_SPACE=hello-world
+      - CONTENTFUL_ENVIRONMENT=staging
+      - CONTENTFUL_MANAGEMENT_TOKEN=hello-world
+      - CONTENTFUL_ACCESS_TOKEN=hello-world
+      - CONTENTFUL_WEBHOOK_SECRET=hello-world
+      - STRIPE_API_KEY=hello-world
+      - STRIPE_WEBHOOK_SECRET=hello-world
+      - REDIS_HOST=gql-subscriptions
+      - REDIS_PORT=6379
     depends_on:
       - redis
   redis:

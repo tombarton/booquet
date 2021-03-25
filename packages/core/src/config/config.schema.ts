@@ -7,9 +7,6 @@ export type ConfigSchema = {
   BE_URL: string;
 
   // Prisma
-  PRISMA_USERNAME: string;
-  PRISMA_PASSWORD: string;
-  PRISMA_DB_NAME: string;
   PRISMA_DB_URL: string;
 
   // GraphQL
@@ -51,10 +48,7 @@ export const configValidationSchema = Joi.object<ConfigSchema>({
   BE_URL: Joi.string().default('http://google.com'),
 
   // Prisma
-  PRISMA_USERNAME: Joi.string(),
-  PRISMA_PASSWORD: Joi.string(),
-  PRISMA_DB_NAME: Joi.string(),
-  PRISMA_DB_URL: Joi.string(),
+  PRISMA_DB_URL: Joi.string().required(),
 
   // GraphQL
   GRAPHQL_SCHEMA_PATH: Joi.string().default('./schema.graphql'),
@@ -62,28 +56,28 @@ export const configValidationSchema = Joi.object<ConfigSchema>({
   GRAPHQL_PLAYGROUND_ENABLED: Joi.number().default(0),
 
   // Security
-  JWT_SECRET: Joi.string(),
+  JWT_SECRET: Joi.string().required(),
   JWT_EXPIRY: Joi.string().default('5m'),
-  REFRESH_SECRET: Joi.string(),
+  REFRESH_SECRET: Joi.string().required(),
   REFRESH_EXPIRY: Joi.string().default('1w'),
   BCRYPT_SALT_OR_ROUNDS: Joi.number().default(10),
 
   // Email
-  POSTMARK_KEY: Joi.string(),
-  EMAIL_FROM_ADDRESS: Joi.string(),
+  POSTMARK_KEY: Joi.string().required(),
+  EMAIL_FROM_ADDRESS: Joi.string().required(),
 
   // Contentful
-  CONTENTFUL_SPACE: Joi.string(),
-  CONTENTFUL_ENVIRONMENT: Joi.string(),
-  CONTENTFUL_MANAGEMENT_TOKEN: Joi.string(),
-  CONTENTFUL_ACCESS_TOKEN: Joi.string(),
-  CONTENTFUL_WEBHOOK_SECRET: Joi.string(),
+  CONTENTFUL_SPACE: Joi.string().required(),
+  CONTENTFUL_ENVIRONMENT: Joi.string().required(),
+  CONTENTFUL_MANAGEMENT_TOKEN: Joi.string().required(),
+  CONTENTFUL_ACCESS_TOKEN: Joi.string().required(),
+  CONTENTFUL_WEBHOOK_SECRET: Joi.string().required(),
 
   // Stripe
-  STRIPE_API_KEY: Joi.string(),
-  STRIPE_WEBHOOK_SECRET: Joi.string(),
+  STRIPE_API_KEY: Joi.string().required(),
+  STRIPE_WEBHOOK_SECRET: Joi.string().required(),
 
   // Redis
-  REDIS_HOST: Joi.string(),
-  REDIS_PORT: Joi.number(),
+  REDIS_HOST: Joi.string().required(),
+  REDIS_PORT: Joi.number().required(),
 });

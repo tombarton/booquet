@@ -7,6 +7,9 @@ import { configValidationSchema } from './config.schema';
     NestConfigModule.forRoot({
       isGlobal: true,
       validationSchema: configValidationSchema,
+      validationOptions: {
+        abortEarly: true,
+      },
     }),
   ],
 })
