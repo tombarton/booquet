@@ -46,7 +46,7 @@ export type ConfigSchema = {
 
 export const configValidationSchema = Joi.object<ConfigSchema>({
   // General
-  PORT: Joi.number().default(4001),
+  PORT: Joi.number().default(4000),
   FE_URL: Joi.string().default('http://google.com'),
   BE_URL: Joi.string().default('http://google.com'),
 
