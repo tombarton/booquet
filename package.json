@@ -10,6 +10,7 @@
     "admin-ui": "yarn workspace @booquet/admin-ui",
     "core": "yarn workspace @booquet/core",
     "test": "yarn workspaces run test",
+    "dev-setup": "yarn && docker-compose -f docker-compose.dev.yml --env-file ./packages/core/.env up -d",
     "postinstall": "yarn core prisma:generate"
   },
   "devDependencies": {

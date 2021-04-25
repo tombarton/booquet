@@ -27,7 +27,6 @@ RUN npx tsc --showConfig
 # Build production.
 RUN yarn build
 
-
 # Remove dev dependencies.
 RUN npm prune --production
 
