@@ -30,7 +30,7 @@ type PaymentIntent {
 
 type Product {
   id: ID!
-  name: String!
+  title: String!
   price: Float!
 }
 
@@ -58,7 +58,12 @@ type Query {
 }
 
 input BasketInput {
-  items: [String!]!
+  items: [BasketItem!]
+}
+
+input BasketItem {
+  id: String!
+  quantity: Float!
 }
 
 input EventCapacityInput {

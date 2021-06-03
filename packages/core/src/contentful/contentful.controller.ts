@@ -9,10 +9,15 @@ export class ContentfulController {
 
   @Post('/update-products')
   updateProducts(): string {
+    console.log('RECEIVED WEBHOOK?');
     // Don't wait for the promise to resolve before responding
     // otherwise the webhook could potentially time out if
     // we're dealing with a large number of updates.
-    this.contentfulService.updateProducts();
+    try {
+      this.contentfulService.updateProducts();
+    } catch (err) {
+      console.error(err);
+    }
 
     return 'OK';
   }

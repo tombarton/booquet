@@ -10,7 +10,7 @@ datasource db {
 model User {
   email            String    @unique
   firstname        String
-  id               String    @default(uuid()) @id
+  id               String    @id @default(uuid())
   lastname         String
   password         String
   registeredAt     DateTime  @default(now())
@@ -30,24 +30,24 @@ enum Role {
 
 model Product {
   id       String     @id
-  name     String
+  title    String
   price    Int
   CartItem CartItem[]
 }
 
 model CartItem {
-  id        String  @default(uuid()) @id
+  id        String  @id @default(uuid())
   product   Product @relation(fields: [productId], references: [id])
   productId String
   quantity  Int     @default(1)
-  cart      Cart    @relation(fields: [cardId], references: [id])
-  cardId    String
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  cartId    String
 }
 
 // Cart in the DB is only used for logged in users. This allows us to persist
 // the basket across devices/browsers/etc.
 model Cart {
-  id        String     @default(uuid()) @id
+  id        String     @id @default(uuid())
   user      User       @relation(fields: [userId], references: [id])
   userId    String     @unique
   createdAt DateTime   @default(now())
@@ -55,7 +55,7 @@ model Cart {
 }
 
 model OrderItem {
-  id       String @default(uuid()) @id
+  id       String @id @default(uuid())
   title    String
   image    String
   price    Int
@@ -77,11 +77,11 @@ enum OrderStatus {
 
 // User is optional as an order can be created as a guest user.
 model Order {
-  id        Int         @default(autoincrement()) @id
+  id        Int         @id @default(autoincrement())
   items     OrderItem[]
   total     Int
   status    OrderStatus
-  chargeId  String?
+  chargeId  String[]
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   user      User?       @relation(fields: [userId], references: [id])
@@ -94,7 +94,7 @@ enum ContactPreference {
 }
 
 model EventParticipant {
-  id                String            @default(uuid()) @id
+  id                String            @id @default(uuid())
   name              String
   emailAddress      String?
   telephone         String?

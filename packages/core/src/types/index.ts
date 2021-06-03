@@ -5,10 +5,10 @@ export interface GraphQLContext {
   res: Response;
 }
 
-export interface ContentfulProduct {
+export interface InternalProduct {
+  id: string;
   title: string;
   price: number;
-  description: string;
 }
 
 export interface ContentfulEvent {

@@ -26,7 +26,7 @@ export class StripeResolver {
       );
     }
 
-    const intentSecret = await this.stripeService.createPayment(basket, user);
+    const intentSecret = await this.stripeService.createPayment(basket);
 
     return {
       token: intentSecret,
