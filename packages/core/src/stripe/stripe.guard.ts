@@ -18,7 +18,7 @@ export class StripeGuard implements CanActivate {
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const event = this.stripeAPI.webhooks.constructEvent(
+      this.stripeAPI.webhooks.constructEvent(
         request.body,
         request.headers['stripe-signature'],
         this.configService.get('STRIPE_WEBHOOK_SECRET')

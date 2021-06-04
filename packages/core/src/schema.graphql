@@ -30,7 +30,7 @@ type PaymentIntent {
 
 type Product {
   id: ID!
-  name: String!
+  title: String!
   price: Float!
 }
 
@@ -49,20 +49,36 @@ type Auth {
   user: User!
 }
 
+type DeliveryCost {
+  """Cost of delivery"""
+  cost: Float!
+}
+
 type Query {
   getIntent(data: BasketInput): PaymentIntent!
   getAllProducts: [Product!]!
   getEventCapacity(data: EventCapacityInput!): Event!
   me: User!
   getAllUsers: [User!]!
+  getDeliveryCost(data: LocationInput!): DeliveryCost!
 }
 
 input BasketInput {
-  items: [String!]!
+  items: [BasketItem!]
+}
+
+input BasketItem {
+  id: String!
+  quantity: Float!
 }
 
 input EventCapacityInput {
   id: String!
+}
+
+input LocationInput {
+  longitude: Float!
+  latitude: Float!
 }
 
 type Mutation {

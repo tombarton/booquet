@@ -3,16 +3,15 @@ import { ConfigService } from '@nestjs/config';
 import {
   createClient as createDeliveryClient,
   ContentfulClientApi as DeliveryClientAPI,
-  Entry,
 } from 'contentful';
+import fetch from 'node-fetch';
 import {
   createClient as createManagementClient,
   ClientAPI as ManagementClientAPI,
 } from 'contentful-management';
 
 import { PrismaService } from '@common/services/prisma.service';
-import { asyncForEach } from '@common/utils/asyncForEach';
-import { ContentfulProduct, ContentfulEvent } from '@root/types';
+import { Product } from '@prisma/client';
 
 @Injectable()
 export class ContentfulService {
@@ -34,84 +33,72 @@ export class ContentfulService {
   }
 
   async updateProducts(): Promise<void> {
-    const productContent: Entry<ContentfulProduct | ContentfulEvent>[] = [];
-    const segmentSize = 1000;
-    let fetchedAllContent = false;
-    let paginationSkip = 0;
+    const retrievedProducts = await this.fetchProductsFromGraphCMS();
+    const retrievedProductIds = new Set(retrievedProducts.map(p => p.id));
 
-    // Fetch all the product data from contentful. There is the chance that this could be paginated if they have
-    // over 1000 pieces of content so we've included some simple pagination functionaltiy to loop over this.
-    while (!fetchedAllContent) {
-      const productDataSegment = await this.contentfulClient.getEntries<
-        ContentfulProduct | ContentfulEvent
-      >({
-        limit: segmentSize,
-        skip: paginationSkip,
-      });
+    // Grab a local copy of all products.
+    const existingProducts = await this.prismaService.product.findMany();
 
-      const { items, total, skip } = productDataSegment;
+    const deletedProducts = existingProducts.filter(
+      p => !retrievedProductIds.has(p.id)
+    );
 
-      productContent.push(...items);
+    // Create queries
+    const deleteCartItemsQuery = deletedProducts.map(p =>
+      this.prismaService.cartItem.deleteMany({ where: { productId: p.id } })
+    );
+    const deleteProductsQuery = deletedProducts.map(p =>
+      this.prismaService.product.delete({ where: { id: p.id } })
+    );
+    const upsertProductsQuery = retrievedProducts.map(p =>
+      this.prismaService.product.upsert({
+        create: p,
+        update: p,
+        where: { id: p.id },
+      })
+    );
 
-      // Check the total is higher than segment size plus the length of the items array.
-      if (items.length + skip < total) {
-        paginationSkip = skip + segmentSize;
-      } else {
-        fetchedAllContent = true;
-      }
-    }
+    // Execute queries as part of transaction.
+    await this.prismaService.$transaction([
+      ...deleteCartItemsQuery,
+      ...deleteProductsQuery,
+      ...upsertProductsQuery,
+    ]);
+  }
 
-    // We're waiting for Prisma 2 to release the .batch() method for this as this
-    // is really bad from a performance point-of-view. Each individual loop is a
-    // DB transaction. If there's potentially 1000 items, that's a stupid amount
-    // of pressure to put on the databse just to simply update the products.
-    await asyncForEach<Entry<ContentfulProduct | ContentfulEvent>>(
-      productContent,
-      async content => {
-        switch (content.sys.contentType.sys.id) {
-          case 'product': {
-            const product = content as Entry<ContentfulProduct>;
-            return await this.prismaService.product.upsert({
-              create: {
-                id: product.sys.id,
-                name: product.fields.title,
-                price: product.fields.price,
-              },
-              update: {
-                name: product.fields.title,
-                price: product.fields.price,
-              },
-              where: {
-                id: product.sys.id,
-              },
-            });
-          }
-          case 'event': {
-            const event = content as Entry<ContentfulEvent>;
-            return await this.prismaService.event.upsert({
-              create: {
-                id: event.sys.id,
-                title: event.fields.title,
-                date: new Date(event.fields.date),
-                capacity: event.fields.availableSpaces,
-              },
-              update: {
-                title: event.fields.title,
-                date: new Date(event.fields.date),
-                capacity: event.fields.availableSpaces,
-              },
-              where: {
-                id: event.sys.id,
-              },
-            });
-          }
-          default: {
-            console.error(
-              `No case found for content type: ${content.sys.contentType.sys.id}`
-            );
+  async fetchProductsFromGraphCMS(): Promise<Product[]> {
+    try {
+      const query = `
+        query {
+          products {
+            id,
+            title,
+            price
           }
         }
-      }
-    );
+      `;
+
+      const response = await fetch(
+        'https://api-eu-central-1.graphcms.com/v2/ckl00k49r91s701z80x52eknp/master',
+        {
+          method: 'POST',
+          body: JSON.stringify({ query, variables: {} }),
+        }
+      );
+
+      if (!response.ok) throw new Error(response.statusText);
+
+      const parsedResponse = response.json() as Promise<{
+        data: { products: Product[] };
+      }>;
+
+      return (await parsedResponse).data.products.map(product => ({
+        ...product,
+        // CMS stores prices as a float.
+        price: Math.round(product.price * 100),
+      }));
+    } catch (err) {
+      console.error(`Failed to retrieve products: ${err.message}`);
+    }
   }
 }
