@@ -49,12 +49,18 @@ type Auth {
   user: User!
 }
 
+type DeliveryCost {
+  """Cost of delivery"""
+  cost: Float!
+}
+
 type Query {
   getIntent(data: BasketInput): PaymentIntent!
   getAllProducts: [Product!]!
   getEventCapacity(data: EventCapacityInput!): Event!
   me: User!
   getAllUsers: [User!]!
+  getDeliveryCost(data: LocationInput!): DeliveryCost!
 }
 
 input BasketInput {
@@ -68,6 +74,11 @@ input BasketItem {
 
 input EventCapacityInput {
   id: String!
+}
+
+input LocationInput {
+  longitude: Float!
+  latitude: Float!
 }
 
 type Mutation {

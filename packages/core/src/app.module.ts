@@ -13,6 +13,7 @@ import { isEnabled, GQL_CONFIG, CORS_CONFIG } from '@core/config';
 import { AUTH_HEADER } from '@root/auth/strategies';
 import { NestGraphQLConnectionParams, NestGraphQLWebSocket } from './types';
 import { ConfigModule } from './config/config.module';
+import { DeliveryModule } from './delivery/delivery.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { ConfigModule } from './config/config.module';
     AuthModule,
     UserModule,
     HealthModule,
+    DeliveryModule,
   ],
 })
 export class AppModule implements NestModule {
