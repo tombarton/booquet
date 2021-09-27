@@ -1,4 +1,4 @@
-import { CorsOptions } from 'cors';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 export const GQL_CONFIG = {
   schemaPath: './src/schema.graphql',
